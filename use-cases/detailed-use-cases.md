@@ -1,950 +1,96 @@
-# AI Native Workflow 3.0 详细用例集
 
-## 🚀 Sales (销售场景) 详细用例
 
-### 1. 智能销售线索管理系统
+### 3. AI插画师与图文内容自动生成器
 
 **Workflow 名称**
-CRM 线索智能评分与跟进自动化系统
+AI驱动的多媒体图文内容智能创作平台
 
 **产物描述**
-输出完整的客户管理表格，包含客户画像补全、优先级评分、个性化跟进方案和团队协作通知。
+基于文案或创意概念，自动生成包含插画、图文排版、多尺寸适配的完整视觉内容，支持各种营销场景和平台需求。
 
 **Start 参数**
 ```json
 {
-  "leads_file": "file", // 上传的客户线索文件（Excel/CSV）
-  "company_info": "string", // 公司背景和产品信息
-  "sales_criteria": "object", // 评分标准配置
-  "team_config": "object" // 团队结构和Slack配置
-}
-```
-
-**Agent 节点设计**
-
-**Agent 1: 数据解析与清洗专家**
-- **上下文**: 表格结构、数据质量标准、字段映射规则
-- **Prompt**: 解析上传的线索文件，提取并标准化客户基础信息
-- **Tools**: Google Sheets、Microsoft Excel、Airtable、CSV Parser
-- **输出**: 标准化客户数据结构、数据质量报告、清洗日志
-
-**Agent 2: 信息补全调研员**
-- **上下文**: 客户基础信息、企业数据源、社交媒体信息
-- **Prompt**: 基于客户公司名称等信息，补全详细的企业背景和联系人信息
-- **Tools**: LinkedIn Sales Navigator、Clearbit API、ZoomInfo、Hunter.io
-- **输出**: 完整的客户画像数据、企业财务状况、决策人信息
-
-**Agent 3: 销售评分分析师**
-- **上下文**: 完整客户信息、历史转化数据、行业标准、竞品客户案例
-- **Prompt**: 基于客户信息和业务标准，计算销售优先级分数和转化概率
-- **Tools**: HubSpot CRM、Salesforce、Google Sheets、Notion Database
-- **输出**: 客户评分（0-100分）、评分依据说明、预期转化时间
-
-**Agent 4: 个性化邮件营销专家**
-- **上下文**: 高分客户信息、邮件模板库、产品卖点、成功案例
-- **Prompt**: 为分数≥70的高价值客户生成个性化跟进邮件和营销方案
-- **Tools**: Mailchimp、Gmail、Outreach、Notion
-- **输出**: 个性化邮件内容、发送时机建议、跟进计划
-
-**Agent 5: 团队协作通知员**
-- **上下文**: 中等分数客户信息、销售团队结构、任务分配规则
-- **Prompt**: 为分数40-70的潜在客户发送团队提醒和任务分配
-- **Tools**: Slack、Microsoft Teams、Asana、Linear
-- **输出**: 团队通知消息、任务分配确认、跟进提醒设置
-
-**Agent 6: 低价值客户归档管理员**
-- **上下文**: 低分客户信息、CRM系统、长期培育策略
-- **Prompt**: 将分数<40的客户归档到待培育列表，设置自动化营销
-- **Tools**: HubSpot、ActiveCampaign、Pipedrive、Airtable
-- **输出**: 归档确认、培育计划、定期触达策略
-
-**Agent 7: 综合报告生成员**
-- **上下文**: 所有处理结果、报表模板、数据可视化要求
-- **Prompt**: 生成包含客户分析、行动建议、ROI预测的综合管理报告
-- **Tools**: Google Docs、Notion、Google Sheets、Canva
-- **输出**: 完整的客户管理表格、可视化分析报告、执行计划
-
-**Workflow 流程图**
-```mermaid
-graph TD
-    A[📁 输入客户线索文件] --> B[🧹 数据解析与清洗专家]
-    B --> C[🔍 信息补全调研员]
-    C --> D[📊 销售评分分析师]
-    D --> E{评分结果}
-    E -->|≥70分| F[📧 个性化邮件营销专家]
-    E -->|40-70分| G[👥 团队协作通知员]
-    E -->|<40分| H[📂 低价值客户归档管理员]
-    F --> I[📋 综合报告生成员]
-    G --> I
-    H --> I
-    I --> J[📄 完整客户管理表格]
-    
-    style A fill:#e1f5fe
-    style J fill:#c8e6c9
-    style E fill:#fff3e0
-```
-
----
-
-### 2. 客户画像自动生成器
-
-**Workflow 名称**
-B2B 客户360度画像智能生成系统
-
-**产物描述**
-基于客户基础信息，自动生成详细的企业画像报告，包含财务状况、业务模式、决策链、竞争态势等全方位分析。
-
-**Start 参数**
-```json
-{
-  "company_name": "string", // 目标企业名称
-  "contact_info": "string", // 联系人信息（可选）
-  "industry_focus": "string", // 重点关注的行业信息
-  "analysis_depth": "string" // 分析深度（基础/标准/深度）
-}
-```
-
-**Agent 节点设计**
-
-**Agent 1: 基础信息收集专家**
-- **上下文**: 企业名称、工商注册信息、官网数据
-- **Prompt**: 收集企业基础信息，包括注册资本、成立时间、法人代表等
-- **Tools**: Clearbit API、ZoomInfo、Apollo、Web Scraper
-- **输出**: 企业基础档案、股权结构、经营状况
-
-**Agent 2: 财务状况分析师**
-- **上下文**: 企业财务数据、行业基准、同规模企业对比
-- **Prompt**: 分析企业财务健康度，评估付费能力和投资价值
-- **Tools**: PitchBook、Crunchbase、Google Search、Notion
-- **输出**: 财务健康度评分、付费能力评估、风险提示
-
-**Agent 3: 业务模式研究员**
-- **上下文**: 企业官网、产品介绍、新闻报道、招聘信息
-- **Prompt**: 深度分析企业业务模式、主营产品、目标市场和发展阶段
-- **Tools**: Web Scraper、Google Search、LinkedIn、AngelList
-- **输出**: 业务模式分析、产品矩阵、市场定位、发展阶段
-
-**Agent 4: 决策链映射专家**
-- **上下文**: 企业组织架构、LinkedIn数据、公开人员信息
-- **Prompt**: 识别企业决策链条，找出关键决策人和影响者
-- **Tools**: LinkedIn Sales Navigator、ZoomInfo、Apollo、Hunter.io
-- **输出**: 决策链图谱、关键人员档案、联系方式推荐
-
-**Agent 5: 竞争态势分析师**
-- **上下文**: 同行业企业、市场份额、竞品信息
-- **Prompt**: 分析企业在行业中的竞争地位和市场机会
-- **Tools**: Crunchbase、SimilarWeb、Google Search、Airtable
-- **输出**: 竞争态势图、市场地位评估、机会点识别
-
-**Agent 6: 客户画像整合员**
-- **上下文**: 所有分析结果、画像模板、可视化要求
-- **Prompt**: 整合所有分析结果，生成完整的360度客户画像报告
-- **Tools**: Notion、Google Docs、Canva、Google Sheets
-- **输出**: 完整客户画像报告、接触策略建议、成交概率预测
-
-**Workflow 流程图**
-```mermaid
-graph TD
-    A[🏢 输入企业名称] --> B[📋 基础信息收集专家]
-    B --> C[💰 财务状况分析师]
-    B --> D[🔄 业务模式研究员]
-    B --> E[👑 决策链映射专家]
-    C --> F[⚔️ 竞争态势分析师]
-    D --> F
-    E --> F
-    F --> G[📊 客户画像整合员]
-    G --> H[📄 360度客户画像报告]
-    
-    style A fill:#e1f5fe
-    style H fill:#c8e6c9
-    style G fill:#fff9c4
-```
-
----
-
-## 📈 Marketing (营销场景) 详细用例
-
-### 1. 智能社媒运营全流程系统
-
-**Workflow 名称**
-AI驱动的社交媒体营销自动化平台
-
-**产物描述**
-输出完整的社媒运营解决方案，包含趋势洞察报告、内容创作矩阵、发布执行计划、互动管理策略和效果分析报告。
-
-**Start 参数**
-```json
-{
-  "brand_info": "object", // 品牌基础信息和定位
-  "target_platforms": "array", // 目标平台列表（微博、小红书、抖音等）
-  "campaign_goal": "string", // 营销目标（品牌曝光、用户增长、转化等）
-  "content_style": "string", // 内容风格偏好
-  "budget_range": "string", // 预算范围
-  "time_period": "string" // 营销周期
-}
-```
-
-**Agent 节点设计**
-
-**Agent 1: 市场趋势洞察专家**
-- **上下文**: 行业关键词、竞品分析、平台算法规则、热点话题
-- **Prompt**: 基于目标行业和平台，深度分析市场趋势和内容机会点
-- **Tools**: Google Trends、BuzzSumo、Hootsuite Insights、SEMrush
-- **输出**: 趋势分析报告、热点话题清单、最佳发布时机、内容方向建议
-
-**Agent 2: 内容策略规划师**
-- **上下文**: 趋势报告、品牌调性、目标受众画像、平台特性
-- **Prompt**: 制定差异化内容策略，规划内容日历和发布节奏
-- **Tools**: Notion、Asana、Google Calendar、Airtable
-- **输出**: 内容策略文档、30天内容日历、创意方向指南
-
-**Agent 3: 多媒体内容创作专家**
-- **上下文**: 内容策略、品牌视觉规范、平台尺寸要求
-- **Prompt**: 批量创作符合平台特色的图文、视频、音频等多媒体内容
-- **Tools**: Canva、Figma、Google Docs、Loom
-- **输出**: 多平台适配内容、素材库、创意说明文档
-
-**Agent 4: 智能发布执行者**
-- **上下文**: 创作内容、发布日历、平台API、用户活跃时间
-- **Prompt**: 按照最优时机自动发布内容到各个平台，并进行A/B测试
-- **Tools**: Buffer、Hootsuite、Later、Zapier
-- **输出**: 发布确认报告、内容链接汇总、A/B测试结果
-
-**Agent 5: 互动管理与客服专家**
-- **上下文**: 发布内容、用户评论、私信咨询、品牌话术
-- **Prompt**: 智能管理用户互动，及时回复评论和私信，维护品牌形象
-- **Tools**: Zendesk、Intercom、Slack、Gmail
-- **输出**: 互动处理报告、客服质量评估、用户反馈汇总
-
-**Agent 6: 数据监测分析师**
-- **上下文**: 发布数据、互动数据、转化数据、竞品表现
-- **Prompt**: 实时监测内容表现，分析数据趋势并提供优化建议
-- **Tools**: Google Analytics、Facebook Analytics、Hootsuite Analytics、Google Sheets
-- **输出**: 实时数据仪表板、周度分析报告、优化策略建议
-
-**Agent 7: ROI效果评估员**
-- **上下文**: 所有营销数据、成本投入、转化指标、业务目标
-- **Prompt**: 综合评估营销ROI，生成效果报告和下期策略建议
-- **Tools**: Google Analytics、HubSpot、Google Sheets、Notion
-- **输出**: ROI分析报告、营销效果总结、下期投放建议
-
-**Workflow 流程图**
-```mermaid
-graph TD
-    A[🎯 品牌信息输入] --> B[📊 市场趋势洞察专家]
-    B --> C[📋 内容策略规划师]
-    C --> D[🎨 多媒体内容创作专家]
-    D --> E[🚀 智能发布执行者]
-    E --> F[💬 互动管理与客服专家]
-    E --> G[📈 数据监测分析师]
-    F --> H[💰 ROI效果评估员]
-    G --> H
-    H --> I[📊 完整社媒运营方案]
-    
-    style A fill:#e1f5fe
-    style I fill:#c8e6c9
-    style H fill:#ffecb3
-```
-
----
-
-### 2. 多平台营销内容矩阵生成器
-
-**Workflow 名称**
-一站式多平台营销内容适配系统
-
-**产物描述**
-基于核心创意概念，自动生成适配不同平台特点的营销内容矩阵，包含文案、视觉、视频等多种形式。
-
-**Start 参数**
-```json
-{
-  "core_concept": "string", // 核心营销概念
+  "content_brief": "string", // 内容创作简报
+  "visual_style": "object", // 视觉风格偏好
   "target_platforms": "array", // 目标平台列表
-  "brand_guidelines": "object", // 品牌视觉和语言规范
-  "content_types": "array", // 内容类型需求
-  "campaign_duration": "string" // 营销周期
+  "brand_guidelines": "object", // 品牌视觉规范
+  "content_type": "string", // 内容类型（海报/信息图/文章配图等）
+  "output_formats": "array" // 输出格式要求
 }
 ```
 
 **Agent 节点设计**
 
-**Agent 1: 核心创意分析师**
-- **上下文**: 核心概念、品牌定位、目标受众、营销目标
-- **Prompt**: 深度分析核心创意，提炼关键信息和传播要点
-- **Tools**: Notion、Google Docs、Miro、Google Sheets
-- **输出**: 创意解构报告、核心信息框架、传播策略建议
+**Agent 1: 创意概念分析师**
+- **上下文**: 创作简报、目标受众、传播目标、品牌调性
+- **输入变量**: `content_brief` (内容创作简报)、`brand_guidelines` (品牌视觉规范)
+- **Prompt**: 深度分析创作需求，提炼核心创意概念和视觉表达方向
+- **Tools**: n8n (OpenAI GPT-4 Integration)、Make (Notion Integration)、Zapier (Google Docs API)、AI Analysis MCP
+- **输出**: 创意概念、视觉方向、表达重点、情感基调
 
-**Agent 2: 平台特性研究员**
-- **上下文**: 目标平台列表、平台算法规则、用户行为特征
-- **Prompt**: 深度研究各平台特性，制定差异化适配策略
-- **Tools**: Google Search、SEMrush、BuzzSumo、Airtable
-- **输出**: 平台特性报告、适配策略指南、内容规格要求
+**Agent 2: 插画风格设计师**
+- **上下文**: 创意概念、品牌规范、流行趋势、目标平台特性
+- **输入变量**: `visual_style` (视觉风格偏好)、创意概念分析结果
+- **Prompt**: 确定插画风格和视觉元素，制定统一的设计语言
+- **Tools**: n8n (Midjourney Integration)、Zapier (DALL-E API)、Make (Figma Integration)、Stable Diffusion MCP
+- **输出**: 插画风格指南、色彩方案、视觉元素库、设计规范
 
-**Agent 3: 文案创作矩阵师**
-- **上下文**: 核心创意、平台特性、品牌语言风格、字数限制
-- **Prompt**: 为每个平台创作符合特性的差异化文案内容
-- **Tools**: Google Docs、Notion、Grammarly、Hemingway Editor
-- **输出**: 多平台文案矩阵、标题优化建议、话题标签推荐
+**Agent 3: AI插画生成专家**
+- **上下文**: 插画风格、具体场景、构图要求、技术参数
+- **输入变量**: 插画风格指南、`content_type` (内容类型)
+- **Prompt**: 使用AI工具生成高质量的插画和图像素材
+- **Tools**: n8n (Midjourney API)、Zapier (DALL-E Integration)、Make (Stable Diffusion)、Leonardo AI MCP
+- **输出**: 原创插画素材、多版本变体、高清图像文件、素材库
 
-**Agent 4: 视觉设计适配师**
-- **上下文**: 品牌视觉规范、平台尺寸要求、创意概念、设计趋势
-- **Prompt**: 设计符合各平台规格的视觉内容和品牌一致性元素
-- **Tools**: Canva、Figma、Adobe Creative Cloud、Unsplash
-- **输出**: 多尺寸视觉素材、设计规范文档、素材使用指南
+**Agent 4: 文案内容创作师**
+- **上下文**: 创意概念、目标受众、平台特性、传播目标
+- **输入变量**: `target_platforms` (目标平台列表)、创意概念
+- **Prompt**: 创作符合平台特点和传播目标的文案内容
+- **Tools**: n8n (Claude API)、Zapier (OpenAI GPT-4)、Make (Google Docs Integration)、Anthropic MCP
+- **输出**: 平台适配文案、标题优化、hashtag建议、文案变体
 
-**Agent 5: 视频内容制作师**
-- **上下文**: 创意脚本、平台视频规格、品牌调性、流行元素
-- **Prompt**: 制作适配不同平台的视频内容，包含短视频和长视频
-- **Tools**: Loom、Canva Video、DaVinci Resolve、YouTube Studio
-- **输出**: 多平台视频内容、剪辑方案、发布建议
+**Agent 5: 图文排版设计师**
+- **上下文**: 插画素材、文案内容、排版规则、品牌规范
+- **输入变量**: 插画素材、文案内容、`brand_guidelines` (品牌视觉规范)
+- **Prompt**: 进行专业的图文排版设计，确保视觉层次和阅读体验
+- **Tools**: n8n (Canva API)、Make (Figma Integration)、Zapier (Adobe Creative SDK)、InDesign MCP
+- **输出**: 排版设计稿、多版本布局、字体规范、视觉层次
 
-**Agent 6: 互动策略设计师**
-- **上下文**: 平台互动特性、用户参与习惯、营销目标、品牌个性
-- **Prompt**: 设计促进用户参与的互动策略和UGC激励方案
-- **Tools**: Notion、Google Forms、Typeform、Airtable
-- **输出**: 互动策略方案、UGC征集计划、用户激励机制
+**Agent 6: 多尺寸适配专家**
+- **上下文**: 设计稿、平台规格、显示要求、质量标准
+- **输入变量**: `output_formats` (输出格式要求)、排版设计稿
+- **Prompt**: 将设计内容适配到不同平台和尺寸要求
+- **Tools**: n8n (Image Resize API)、Zapier (Canva Resize)、Make (Photoshop API)、ImageMagick MCP
+- **输出**: 多尺寸图像、平台适配版本、质量检查报告
 
-**Agent 7: 内容矩阵整合员**
-- **上下文**: 所有创作内容、发布计划、平台特性、效果预期
-- **Prompt**: 整合所有内容，生成完整的多平台营销内容矩阵
-- **Tools**: Notion、Google Sheets、Airtable、Google Calendar
-- **输出**: 完整内容矩阵、发布执行计划、效果预测报告
+**Agent 7: 质量控制与优化师**
+- **上下文**: 所有输出内容、质量标准、品牌一致性、技术规范
+- **输入变量**: 所有Agent输出结果、质量标准
+- **Prompt**: 检查内容质量，确保品牌一致性和技术规范达标
+- **Tools**: Make (Quality Check API)、n8n (Brand Compliance)、Zapier (Image Analysis)、Quality Control MCP
+- **输出**: 质量检查报告、优化建议、最终版本确认
 
-**Workflow 流程图**
-```mermaid
-graph TD
-    A[💡 核心营销概念] --> B[🔍 核心创意分析师]
-    B --> C[📱 平台特性研究员]
-    C --> D[✍️ 文案创作矩阵师]
-    C --> E[🎨 视觉设计适配师]
-    C --> F[🎬 视频内容制作师]
-    D --> G[🤝 互动策略设计师]
-    E --> G
-    F --> G
-    G --> H[📊 内容矩阵整合员]
-    H --> I[📋 多平台内容矩阵]
-    
-    style A fill:#e1f5fe
-    style I fill:#c8e6c9
-    style C fill:#fff3e0
-```
-
----
-
-## 🔬 Research (研究场景) 详细用例
-
-### 1. 投资机构深度研究系统
-
-**Workflow 名称**
-投资机构与知名投资人全景分析平台
-
-**产物描述**
-生成投资机构或投资人的全面研究报告，包含历史业绩、投资风格、持仓分析、交易复盘、市场影响力等多维度深度分析。
-
-**Start 参数**
-```json
-{
-  "investor_name": "string", // 投资机构/投资人名称
-  "analysis_period": "string", // 分析时间段
-  "focus_sectors": "array", // 重点关注行业
-  "report_type": "string", // 报告类型（机构分析、个股追踪、行业对比）
-  "depth_level": "string" // 分析深度（基础/标准/深度）
-}
-```
-
-**Agent 节点设计**
-
-**Agent 1: 基础信息档案建立者**
-- **上下文**: 投资人/机构名称、公开披露信息、新闻报道、官方资料
-- **Prompt**: 构建投资机构的完整档案，包含历史沿革、管理团队、投资理念
-- **Tools**: SEC文件解析、新闻搜索API、官网爬虫、金融数据库、维基百科
-- **输出**: 机构基础档案、管理团队信息、历史里程碑、AUM规模变化
-
-**Agent 2: 投资哲学与风格分析师**
-- **上下文**: 历史投资记录、公开演讲、投资信件、媒体采访
-- **Prompt**: 深度分析投资人的投资哲学、决策风格和知名投资理念
-- **Tools**: 文本分析、NLP情感分析、投资风格分类器、理念提取
-- **输出**: 投资哲学总结、风格特征分析、代表性言论集、理念演化
-
-**Agent 3: 持仓结构深度剖析员**
-- **上下文**: 13F文件、持仓披露、成本估算、仓位变化
-- **Prompt**: 分析当前持仓结构、历史成本、集中度风险和配置逻辑
-- **Tools**: 13F文件解析器、持仓计算、成本估算模型、风险分析
-- **输出**: 持仓结构图、成本收益分析、集中度指标、风险评估
-
-**Agent 4: 交易行为时序分析师**
-- **上下文**: 季度持仓变化、买卖时点、市场环境、重大事件
-- **Prompt**: 分析历史交易决策的时机选择和背后逻辑
-- **Tools**: 时间序列分析、事件关联、市场时机分析、决策复盘
-- **输出**: 交易时间线、买卖决策分析、市场时机把握、收益归因
-
-**Agent 5: 行业配置策略研究员**
-- **上下文**: 投资组合、行业分类、宏观周期、板块轮动
-- **Prompt**: 分析投资组合的行业配置逻辑和轮动策略
-- **Tools**: 行业分类器、配置分析、周期判断、轮动模式识别
-- **输出**: 行业配置变迁、轮动策略分析、配置逻辑解读
-
-**Agent 6: 重点个股深度追踪员**
-- **上下文**: 重仓股票、持仓变化、基本面分析、市场表现
-- **Prompt**: 针对重点持仓进行深度个股分析和投资逻辑推演
-- **Tools**: 个股分析、基本面数据、估值模型、技术分析
-- **输出**: 重点个股报告、投资逻辑分析、风险收益评估
-
-**Agent 7: 市场影响力评估员**
-- **上下文**: 市场关注度、媒体报道、跟随投资、市场反应
-- **Prompt**: 评估投资人的市场影响力和投资决策的示范效应
-- **Tools**: 媒体监测、市场反应分析、影响力指标、跟随效应
-- **输出**: 影响力评估报告、市场关注度分析、示范效应研究
-
-**Agent 8: 综合研究报告编撰员**
-- **上下文**: 所有分析结果、报告模板、可视化要求、专业标准
-- **Prompt**: 整合所有分析内容，生成专业级投资研究报告
-- **Tools**: 报告生成器、专业图表、PDF排版、数据可视化
-- **输出**: 完整投资研究报告、核心观点摘要、投资启示录
+**Agent 8: 内容包装与交付专家**
+- **上下文**: 最终内容、交付格式、使用指南、版权信息
+- **输入变量**: 最终内容、交付要求配置
+- **Prompt**: 打包所有内容，提供使用指南和交付服务
+- **Tools**: n8n (File Management)、Zapier (Google Drive API)、Make (Dropbox Integration)、Archive MCP
+- **输出**: 完整内容包、使用指南、源文件、版权声明
 
 **Workflow 流程图**
 ```mermaid
 graph TD
-    A[🏛️ 投资机构名称] --> B[📋 基础信息档案建立者]
-    B --> C[💭 投资哲学与风格分析师]
-    B --> D[📊 持仓结构深度剖析员]
-    C --> E[⏰ 交易行为时序分析师]
-    D --> E
-    E --> F[🏭 行业配置策略研究员]
-    F --> G[🎯 重点个股深度追踪员]
-    G --> H[📈 市场影响力评估员]
-    H --> I[📄 综合研究报告编撰员]
-    I --> J[📊 完整投资研究报告]
-    
-    style A fill:#e1f5fe
-    style J fill:#c8e6c9
-    style I fill:#f3e5f5
-```
-
----
-
-### 2. 行业研究报告生成器
-
-**Workflow 名称**
-AI驱动的行业深度研究自动化平台
-
-**产物描述**
-基于行业关键词和研究需求，自动生成包含市场规模、竞争格局、发展趋势、投资机会等内容的专业行业研究报告。
-
-**Start 参数**
-```json
-{
-  "industry_name": "string", // 目标行业名称
-  "research_scope": "string", // 研究范围（全球/国内/区域）
-  "time_horizon": "string", // 时间跨度（历史3年+未来5年）
-  "focus_areas": "array", // 重点关注领域
-  "report_purpose": "string" // 报告用途（投资/战略/学术）
-}
-```
-
-**Agent 节点设计**
-
-**Agent 1: 行业定义与边界划分专家**
-- **上下文**: 行业名称、分类标准、产业链结构、相关行业
-- **Prompt**: 明确行业定义、划分研究边界、构建产业链图谱
-- **Tools**: 行业分类标准、产业链分析、边界界定、关联行业识别
-- **输出**: 行业定义文档、产业链图谱、研究边界说明
-
-**Agent 2: 市场规模与增长趋势分析师**
-- **上下文**: 行业统计数据、市场研究报告、官方统计、历史数据
-- **Prompt**: 分析市场规模变化趋势，预测未来增长潜力
-- **Tools**: 统计数据API、市场数据库、趋势分析、增长模型
-- **输出**: 市场规模报告、增长趋势图、未来预测、关键驱动因素
-
-**Agent 3: 竞争格局深度研究员**
-- **上下文**: 主要企业信息、市场份额、竞争策略、并购活动
-- **Prompt**: 绘制竞争格局图，分析主要玩家的竞争策略
-- **Tools**: 企业数据库、市场份额分析、竞争策略识别、并购追踪
-- **输出**: 竞争格局图、主要企业档案、竞争策略分析、市场集中度
-
-**Agent 4: 技术发展与创新趋势专家**
-- **上下文**: 技术专利、研发投入、创新案例、技术趋势
-- **Prompt**: 分析行业技术发展水平和创新趋势方向
-- **Tools**: 专利数据库、技术分析、创新监测、趋势识别
-- **输出**: 技术发展报告、创新趋势分析、专利布局图、技术路线图
-
-**Agent 5: 政策环境与监管分析师**
-- **上下文**: 政策文件、法规变化、监管动态、政府报告
-- **Prompt**: 分析政策环境对行业发展的影响和未来政策趋势
-- **Tools**: 政策数据库、法规监测、影响分析、政策预测
-- **输出**: 政策环境分析、监管变化追踪、政策影响评估
-
-**Agent 6: 投资机会与风险识别员**
-- **上下文**: 市场机会、投资案例、风险因素、价值链分析
-- **Prompt**: 识别行业投资机会点和潜在风险因素
-- **Tools**: 投资数据分析、机会识别、风险评估、价值链分析
-- **输出**: 投资机会图谱、风险因素分析、投资建议、价值链机会
-
-**Agent 7: 未来发展趋势预测师**
-- **上下文**: 历史发展轨迹、当前状况、驱动因素、国际对比
-- **Prompt**: 基于多维度分析预测行业未来发展趋势和关键变量
-- **Tools**: 趋势预测模型、情景分析、驱动因素权重、对比分析
-- **输出**: 未来趋势预测、情景分析、关键假设、发展路径
-
-**Agent 8: 专业报告整合编撰员**
-- **上下文**: 所有研究成果、专业报告模板、图表规范、行业标准
-- **Prompt**: 整合所有研究内容，生成符合专业标准的行业研究报告
-- **Tools**: 专业报告模板、图表生成、数据可视化、排版工具
-- **输出**: 完整行业研究报告、执行摘要、图表集、数据附录
-
-**Workflow 流程图**
-```mermaid
-graph TD
-    A[🏭 行业名称] --> B[🎯 行业定义与边界划分专家]
-    B --> C[📊 市场规模与增长趋势分析师]
-    B --> D[⚔️ 竞争格局深度研究员]
-    B --> E[🔬 技术发展与创新趋势专家]
-    C --> F[📋 政策环境与监管分析师]
-    D --> F
+    A[📝 创作简报] --> B[💡 创意概念分析师]
+    B --> C[🎨 插画风格设计师]
+    C --> D[🖼️ AI插画生成专家]
+    B --> E[✍️ 文案内容创作师]
+    D --> F[📐 图文排版设计师]
     E --> F
-    F --> G[💰 投资机会与风险识别员]
-    G --> H[🔮 未来发展趋势预测师]
-    H --> I[📄 专业报告整合编撰员]
-    I --> J[📊 完整行业研究报告]
-    
-    style A fill:#e1f5fe
-    style J fill:#c8e6c9
-    style B fill:#fff3e0
-```
-
----
-
-## 🎧 Support (客服支持场景) 详细用例
-
-### 1. 智能知识库构建器
-
-**Workflow 名称**
-AI驱动的客服知识库自动化构建系统
-
-**产物描述**
-基于历史工单、产品文档、常见问题等数据，自动构建结构化知识库，包含FAQ、解决方案、话术模板等完整客服支持体系。
-
-**Start 参数**
-```json
-{
-  "data_sources": "array", // 数据源（工单系统、文档库、聊天记录等）
-  "product_info": "object", // 产品信息和功能说明
-  "service_scope": "array", // 服务范围和业务类型
-  "knowledge_depth": "string", // 知识深度要求
-  "update_frequency": "string" // 更新频率设置
-}
-```
-
-**Agent 节点设计**
-
-**Agent 1: 数据源整合与清洗专家**
-- **上下文**: 多源数据格式、数据质量标准、清洗规则
-- **Prompt**: 整合来自不同系统的客服数据，进行标准化清洗和去重
-- **Tools**: 数据集成工具、文本清洗、重复检测、格式标准化
-- **输出**: 清洗后的统一数据集、数据质量报告、问题分类统计
-
-**Agent 2: 问题分类与聚类分析师**
-- **上下文**: 客户问题文本、产品功能模块、业务流程
-- **Prompt**: 对客户问题进行智能分类和聚类，识别高频问题和问题模式
-- **Tools**: 文本分类、聚类算法、主题建模、相似度计算
-- **输出**: 问题分类体系、高频问题清单、问题分布分析
-
-**Agent 3: 标准解决方案提炼师**
-- **上下文**: 历史解决方案、成功案例、专家知识、产品文档
-- **Prompt**: 从历史解决方案中提炼标准化的解决流程和最佳实践
-- **Tools**: 方案提取、流程标准化、最佳实践识别、效果评估
-- **输出**: 标准解决方案库、解决流程图、成功率统计
-
-**Agent 4: FAQ智能生成器**
-- **上下文**: 高频问题、标准答案、产品特性、用户画像
-- **Prompt**: 基于问题分析生成结构化FAQ，包含问题变体和详细解答
-- **Tools**: FAQ生成、问题变体识别、答案优化、可读性提升
-- **输出**: 结构化FAQ库、问题变体映射、答案质量评分
-
-**Agent 5: 客服话术模板创建师**
-- **上下文**: 优秀客服对话、话术标准、品牌调性、情感表达
-- **Prompt**: 创建不同场景下的客服话术模板和沟通指南
-- **Tools**: 话术提取、情感分析、模板生成、品牌一致性检查
-- **输出**: 话术模板库、沟通指南、情感表达建议
-
-**Agent 6: 知识图谱构建专家**
-- **上下文**: 知识条目、关联关系、产品架构、业务流程
-- **Prompt**: 构建知识之间的关联关系，建立可导航的知识图谱
-- **Tools**: 知识图谱构建、关系抽取、语义网络、图数据库
-- **输出**: 知识关系图谱、导航路径、关联推荐
-
-**Agent 7: 智能搜索与推荐引擎**
-- **上下文**: 知识库内容、用户查询模式、搜索算法、个性化需求
-- **Prompt**: 构建智能搜索引擎，支持语义搜索和个性化推荐
-- **Tools**: 语义搜索、向量数据库、推荐算法、相关性评分
-- **输出**: 搜索引擎配置、推荐策略、相关性模型
-
-**Agent 8: 知识库管理与更新系统**
-- **上下文**: 知识库结构、更新规则、版本管理、质量控制
-- **Prompt**: 建立知识库的持续更新和质量管理机制
-- **Tools**: 版本控制、自动更新、质量监控、反馈收集
-- **输出**: 完整知识库系统、管理界面、更新机制、质量指标
-
-**Workflow 流程图**
-```mermaid
-graph TD
-    A[📂 多源客服数据] --> B[🧹 数据源整合与清洗专家]
-    B --> C[📊 问题分类与聚类分析师]
-    C --> D[💡 标准解决方案提炼师]
-    C --> E[❓ FAQ智能生成器]
-    D --> F[💬 客服话术模板创建师]
-    E --> F
-    F --> G[🕸️ 知识图谱构建专家]
-    G --> H[🔍 智能搜索与推荐引擎]
-    H --> I[⚙️ 知识库管理与更新系统]
-    I --> J[📚 完整知识库系统]
-    
-    style A fill:#e1f5fe
-    style J fill:#c8e6c9
-    style C fill:#fff3e0
-```
-
----
-
-### 2. 客户问题自动分类路由系统
-
-**Workflow 名称**
-智能客服问题分类与处理路由平台
-
-**产物描述**
-自动分析客户咨询内容，进行智能分类并路由到最合适的处理团队，提供处理优先级和解决建议。
-
-**Start 参数**
-```json
-{
-  "input_channels": "array", // 输入渠道（邮件、在线客服、电话等）
-  "team_structure": "object", // 团队结构和专业领域
-  "priority_rules": "object", // 优先级判断规则
-  "escalation_rules": "object", // 升级处理规则
-  "sla_requirements": "object" // 服务水平协议要求
-}
-```
-
-**Agent 节点设计**
-
-**Agent 1: 多渠道信息汇聚专家**
-- **上下文**: 不同渠道的数据格式、客户身份识别、历史记录
-- **Prompt**: 从多个渠道收集客户问题，进行统一格式化和客户识别
-- **Tools**: 多渠道集成、身份识别、格式转换、重复检测
-- **输出**: 统一格式的问题记录、客户身份确认、历史关联
-
-**Agent 2: 问题内容智能解析师**
-- **上下文**: 客户问题文本、语言模式、情感表达、关键信息
-- **Prompt**: 深度解析客户问题的核心内容、情感状态和紧急程度
-- **Tools**: NLP文本分析、意图识别、情感分析、关键信息抽取
-- **输出**: 问题核心内容、客户情感状态、关键信息标签
-
-**Agent 3: 智能分类与标签专家**
-- **上下文**: 问题分类体系、产品功能模块、业务流程、历史分类
-- **Prompt**: 对客户问题进行精确分类，添加相关标签和属性
-- **Tools**: 文本分类模型、多标签分类、置信度评估、分类验证
-- **输出**: 问题分类结果、相关标签、分类置信度
-
-**Agent 4: 紧急程度与优先级评估师**
-- **上下文**: 客户等级、问题类型、业务影响、SLA要求
-- **Prompt**: 评估问题的紧急程度和处理优先级，确定响应时限
-- **Tools**: 优先级算法、风险评估、客户价值评估、SLA计算
-- **输出**: 优先级评分、紧急程度标识、建议响应时间
-
-**Agent 5: 团队匹配与路由专家**
-- **上下文**: 团队专业领域、当前工作负载、技能匹配、可用性
-- **Prompt**: 根据问题特性和团队能力进行最优匹配和路由
-- **Tools**: 技能匹配算法、负载均衡、可用性检查、路由优化
-- **输出**: 最佳处理团队、路由决策、负载分配
-
-**Agent 6: 预处理建议生成器**
-- **上下文**: 问题类型、历史解决方案、知识库、最佳实践
-- **Prompt**: 为处理团队提供预处理建议和相关资源推荐
-- **Tools**: 解决方案匹配、资源推荐、最佳实践检索、预处理模板
-- **输出**: 处理建议、相关资源、预处理步骤
-
-**Agent 7: 质量监控与反馈收集员**
-- **上下文**: 处理结果、客户满意度、处理时效、质量标准
-- **Prompt**: 监控处理质量，收集反馈并持续优化分类路由规则
-- **Tools**: 质量监控、满意度调查、反馈分析、规则优化
-- **输出**: 质量报告、改进建议、规则更新、性能指标
-
-**Workflow 流程图**
-```mermaid
-graph TD
-    A[📧 多渠道客户问题] --> B[🔗 多渠道信息汇聚专家]
-    B --> C[🧠 问题内容智能解析师]
-    C --> D[🏷️ 智能分类与标签专家]
-    D --> E[⚡ 紧急程度与优先级评估师]
-    E --> F[🎯 团队匹配与路由专家]
-    F --> G[💡 预处理建议生成器]
-    G --> H[📊 质量监控与反馈收集员]
-    H --> I[✅ 智能路由处理系统]
-    
-    style A fill:#e1f5fe
-    style I fill:#c8e6c9
-    style E fill:#ffecb3
-```
-
----
-
-### 3. 智能客服问答系统
-
-**Workflow 名称**
-AI驱动的智能客服实时问答与解决方案推荐平台
-
-**产物描述**
-基于客户问题实时提供准确答案和解决方案，包含意图识别、知识匹配、个性化回复、满意度跟踪等完整智能客服体验。
-
-**Start 参数**
-```json
-{
-  "customer_query": "string", // 客户问题
-  "customer_context": "object", // 客户背景信息
-  "product_info": "object", // 相关产品信息
-  "service_level": "string", // 服务等级要求
-  "interaction_history": "array", // 历史交互记录
-  "urgency_level": "string" // 紧急程度
-}
-```
-
-**Agent 节点设计**
-
-**Agent 1: 问题意图识别专家**
-- **上下文**: 客户问题、语言模式、意图分类、上下文理解
-- **Prompt**: 深度理解客户问题的真实意图和潜在需求
-- **Tools**: NLP意图识别、语义分析、上下文理解、情感分析
-- **输出**: 意图分类、置信度评分、潜在需求、情感状态
-
-**Agent 2: 知识库智能匹配师**
-- **上下文**: 问题意图、知识库内容、相似度算法、历史成功案例
-- **Prompt**: 从知识库中精确匹配最相关的解决方案和参考信息
-- **Tools**: 向量搜索、语义匹配、相似度计算、知识图谱查询
-- **输出**: 匹配结果、相关度评分、多个候选方案、参考链接
-
-**Agent 3: 个性化回复生成师**
-- **上下文**: 匹配结果、客户信息、品牌语调、服务标准
-- **Prompt**: 生成符合客户特点和品牌调性的个性化回复内容
-- **Tools**: 文本生成、个性化定制、语调调整、模板应用
-- **输出**: 个性化回复、多版本选择、语调适配、表达优化
-
-**Agent 4: 解决方案步骤规划师**
-- **上下文**: 问题类型、解决流程、操作复杂度、客户技能水平
-- **Prompt**: 将解决方案分解为清晰的操作步骤和指导
-- **Tools**: 流程分解、步骤规划、难度评估、可视化指导
-- **输出**: 操作步骤、图文指导、视频链接、检查要点
-
-**Agent 5: 相关问题预测师**
-- **上下文**: 当前问题、客户行为模式、常见关联问题、预防性建议
-- **Prompt**: 预测客户可能遇到的相关问题，提供预防性解决方案
-- **Tools**: 问题关联分析、预测模型、用户行为分析、预防建议
-- **输出**: 相关问题预测、预防建议、扩展信息、主动服务
-
-**Agent 6: 实时质量监控员**
-- **上下文**: 回复质量、客户反应、服务标准、改进机会
-- **Prompt**: 实时监控服务质量，识别问题并触发改进机制
-- **Tools**: 质量监控、反馈分析、实时调整、警报系统
-- **输出**: 质量评估、实时反馈、改进建议、服务调整
-
-**Agent 7: 满意度追踪与优化师**
-- **上下文**: 客户满意度、服务效果、后续跟进、持续改进
-- **Prompt**: 追踪客户满意度，收集反馈并优化服务流程
-- **Tools**: 满意度调查、反馈收集、数据分析、流程优化
-- **输出**: 满意度报告、反馈汇总、优化方案、跟进计划
-
-**Workflow 流程图**
-```mermaid
-graph TD
-    A[❓ 客户问题] --> B[🧠 问题意图识别专家]
-    B --> C[📚 知识库智能匹配师]
-    C --> D[👤 个性化回复生成师]
-    D --> E[📋 解决方案步骤规划师]
-    E --> F[🔮 相关问题预测师]
-    F --> G[👁️ 实时质量监控员]
-    G --> H[📊 满意度追踪与优化师]
-    H --> I[✅ 完整智能客服解决方案]
-    
-    style A fill:#e1f5fe
-    style I fill:#c8e6c9
-    style C fill:#fff3e0
-```
-
----
-
-### 4. 客户满意度分析器
-
-**Workflow 名称**
-客户满意度智能分析与改进建议系统
-
-**产物描述**
-自动收集、分析客户满意度数据，生成详细分析报告和改进建议，帮助企业持续提升客户服务质量。
-
-**Start 参数**
-```json
-{
-  "feedback_sources": "array", // 反馈来源（邮件/电话/在线调查等）
-  "analysis_period": "string", // 分析时间段
-  "service_categories": "array", // 服务类别
-  "customer_segments": "array", // 客户细分
-  "benchmark_data": "object" // 行业基准数据
-}
-```
-
-**Agent 节点设计**
-
-**Agent 1: 多渠道反馈收集专家**
-- **上下文**: 反馈渠道、数据格式、收集规则、质量标准
-- **Prompt**: 从多个渠道自动收集客户满意度反馈数据
-- **Tools**: API集成、数据爬取、调查平台、邮件解析
-- **输出**: 统一反馈数据、来源标识、质量评估、时间戳
-
-**Agent 2: 情感分析与评分师**
-- **上下文**: 反馈文本、情感词典、评分标准、上下文语境
-- **Prompt**: 对客户反馈进行情感分析和满意度评分
-- **Tools**: 情感分析、文本挖掘、评分算法、语义理解
-- **输出**: 情感评分、满意度等级、关键词提取、情感趋势
-
-**Agent 3: 问题分类与根因分析师**
-- **上下文**: 客户抱怨、问题分类、根因分析框架、历史模式
-- **Prompt**: 对客户不满意的问题进行分类和根因分析
-- **Tools**: 文本分类、根因分析、问题聚类、模式识别
-- **输出**: 问题分类、根因识别、频次统计、影响评估
-
-**Agent 4: 趋势与模式识别专家**
-- **上下文**: 历史数据、时间序列、客户行为、季节性因素
-- **Prompt**: 识别满意度变化趋势和模式，预测未来走向
-- **Tools**: 趋势分析、模式识别、预测模型、统计分析
-- **输出**: 趋势报告、模式识别、预测分析、变化原因
-
-**Agent 5: 客户细分洞察师**
-- **上下文**: 客户画像、细分标准、满意度差异、行为特征
-- **Prompt**: 按客户细分分析满意度差异，发现洞察机会
-- **Tools**: 客户细分、对比分析、洞察挖掘、差异识别
-- **输出**: 细分分析、差异报告、洞察发现、优化机会
-
-**Agent 6: 竞争对比与基准分析师**
-- **上下文**: 行业基准、竞争对手数据、标杆实践、差距分析
-- **Prompt**: 对比行业基准和竞争对手，识别改进空间
-- **Tools**: 基准对比、竞争分析、差距识别、最佳实践
-- **输出**: 对比分析、差距报告、基准位置、改进目标
-
-**Agent 7: 改进建议与行动计划师**
-- **上下文**: 分析结果、改进机会、资源限制、优先级原则
-- **Prompt**: 基于分析结果制定具体的改进建议和行动计划
-- **Tools**: 方案规划、优先级排序、资源评估、计划制定
-- **输出**: 改进方案、行动计划、优先级排序、资源需求
-
-**Agent 8: 报告生成与可视化专家**
-- **上下文**: 所有分析结果、报告模板、可视化要求、受众需求
-- **Prompt**: 生成专业的满意度分析报告和可视化图表
-- **Tools**: 报告生成、数据可视化、图表制作、演示文稿
-- **输出**: 完整分析报告、可视化图表、执行摘要、演示文稿
-
-**Workflow 流程图**
-```mermaid
-graph TD
-    A[📊 客户反馈数据] --> B[📡 多渠道反馈收集专家]
-    B --> C[😊 情感分析与评分师]
-    C --> D[🔍 问题分类与根因分析师]
-    D --> E[📈 趋势与模式识别专家]
-    E --> F[👥 客户细分洞察师]
-    F --> G[⚖️ 竞争对比与基准分析师]
-    G --> H[💡 改进建议与行动计划师]
-    H --> I[📄 报告生成与可视化专家]
-    I --> J[📊 完整满意度分析报告]
-    
-    style A fill:#e1f5fe
-    style J fill:#c8e6c9
-    style E fill:#fff3e0
-```
-
----
-
-### 5. 产品使用指南生成器
-
-**Workflow 名称**
-AI驱动的多格式产品使用指南自动化生成平台
-
-**产物描述**
-基于产品功能和特点，自动生成包含文字教程、视频指南、交互演示、FAQ等多种格式的完整产品使用指南。
-
-**Start 参数**
-```json
-{
-  "product_info": "object", // 产品基础信息
-  "target_users": "array", // 目标用户群体
-  "complexity_level": "string", // 复杂度级别
-  "output_formats": "array", // 输出格式（文档/视频/交互等）
-  "language_requirements": "array", // 语言要求
-  "update_frequency": "string" // 更新频率
-}
-```
-
-**Agent 节点设计**
-
-**Agent 1: 产品功能结构分析师**
-- **上下文**: 产品信息、功能模块、用户流程、技术架构
-- **Prompt**: 深度分析产品功能结构，建立完整的功能地图
-- **Tools**: 功能分析、流程梳理、结构建模、用户旅程
-- **输出**: 功能地图、用户流程、操作路径、复杂度评估
-
-**Agent 2: 用户场景与需求分析师**
-- **上下文**: 目标用户、使用场景、技能水平、学习偏好
-- **Prompt**: 分析不同用户群体的使用场景和指南需求
-- **Tools**: 用户研究、场景分析、需求挖掘、偏好识别
-- **输出**: 用户画像、场景清单、需求分析、学习路径
-
-**Agent 3: 教程内容策划师**
-- **上下文**: 功能分析、用户需求、教学理论、内容结构
-- **Prompt**: 策划教程内容结构，设计学习路径和知识点
-- **Tools**: 内容策划、教学设计、知识点分解、路径规划
-- **输出**: 内容大纲、学习路径、知识点树、难度梯度
-
-**Agent 4: 多格式文档撰写师**
-- **上下文**: 内容大纲、写作规范、可读性要求、技术准确性
-- **Prompt**: 撰写清晰易懂的多格式文档教程
-- **Tools**: 技术写作、多格式输出、可读性优化、准确性检查
-- **输出**: 文档教程、多格式版本、结构化内容、检查清单
-
-**Agent 5: 视频脚本与制作师**
-- **上下文**: 教程内容、视频规范、演示技巧、后期要求
-- **Prompt**: 制作清晰的视频教程和操作演示
-- **Tools**: 脚本撰写、屏幕录制、视频编辑、字幕添加
-- **输出**: 视频教程、操作演示、分镜脚本、后期文件
-
-**Agent 6: 交互演示设计师**
-- **上下文**: 产品界面、交互流程、演示技术、用户体验
-- **Prompt**: 设计交互式的产品演示和操作指导
-- **Tools**: 交互设计、原型工具、演示制作、用户测试
-- **输出**: 交互演示、操作指导、用户界面、体验流程
-
-**Agent 7: FAQ与问题解答师**
-- **上下文**: 常见问题、用户困惑、解决方案、支持历史
-- **Prompt**: 整理常见问题和解答，建立完整的FAQ体系
-- **Tools**: 问题收集、分类整理、解答撰写、搜索优化
-- **输出**: FAQ列表、问题分类、解答内容、搜索索引
-
-**Agent 8: 指南整合与发布管理员**
-- **上下文**: 所有教程内容、发布平台、版本管理、用户反馈
-- **Prompt**: 整合所有指南内容，管理发布和持续更新
-- **Tools**: 内容管理、版本控制、发布平台、反馈收集
-- **输出**: 完整指南包、发布计划、版本管理、更新机制
-
-**Workflow 流程图**
-```mermaid
-graph TD
-    A[📱 产品信息] --> B[🔍 产品功能结构分析师]
-    B --> C[👥 用户场景与需求分析师]
-    C --> D[📋 教程内容策划师]
-    D --> E[📝 多格式文档撰写师]
-    D --> F[🎬 视频脚本与制作师]
-    D --> G[🎮 交互演示设计师]
-    E --> H[❓ FAQ与问题解答师]
-    F --> H
-    G --> H
-    H --> I[📦 指南整合与发布管理员]
-    I --> J[📚 完整产品使用指南]
+    F --> G[📱 多尺寸适配专家]
+    G --> H[✅ 质量控制与优化师]
+    H --> I[📦 内容包装与交付专家]
+    I --> J[🎨 完整图文内容包]
     
     style A fill:#e1f5fe
     style J fill:#c8e6c9
@@ -953,182 +99,685 @@ graph TD
 
 ---
 
-### 6. 客服培训资料制作器
+### 4. 短视频制作流水线
 
 **Workflow 名称**
-AI驱动的客服培训资料自动化制作系统
+AI驱动的短视频全流程自动化制作平台
 
 **产物描述**
-根据产品更新、常见问题和服务标准，自动生成完整的客服培训资料，包含知识手册、案例库、培训课程、考核题库等。
+基于创意概念或脚本，自动生成包含脚本策划、素材制作、剪辑合成、字幕配音的完整短视频内容，支持多平台分发。
 
 **Start 参数**
 ```json
 {
-  "product_updates": "array", // 产品更新内容
-  "service_standards": "object", // 服务标准要求
-  "common_issues": "array", // 常见问题集
-  "training_objectives": "array", // 培训目标
-  "staff_levels": "array", // 员工技能级别
-  "training_formats": "array" // 培训形式偏好
+  "video_concept": "string", // 视频创意概念
+  "target_duration": "number", // 目标时长（秒）
+  "video_style": "string", // 视频风格（教学/娱乐/商业等）
+  "target_platforms": "array", // 目标平台（抖音/YouTube/Instagram等）
+  "audience_profile": "object", // 目标受众画像
+  "brand_assets": "object" // 品牌素材库
 }
 ```
 
 **Agent 节点设计**
 
-**Agent 1: 培训需求分析师**
-- **上下文**: 产品变化、服务标准、员工能力、培训目标
-- **Prompt**: 分析培训需求，识别知识差距和技能提升点
-- **Tools**: 需求分析、差距识别、能力评估、目标设定
-- **输出**: 培训需求报告、技能差距、学习目标、优先级排序
+**Agent 1: 视频创意策划师**
+- **上下文**: 创意概念、目标受众、平台特性、内容趋势
+- **输入变量**: `video_concept` (视频创意概念)、`audience_profile` (目标受众画像)
+- **Prompt**: 深度策划视频创意，制定内容框架和传播策略
+- **Tools**: n8n (Trend Analysis API)、Make (Social Media Analytics)、Zapier (Content Strategy Tools)、Creative Planning MCP
+- **输出**: 创意策划方案、内容框架、传播策略、效果预期
 
-**Agent 2: 知识内容整理师**
-- **上下文**: 产品知识、服务流程、最佳实践、更新内容
-- **Prompt**: 整理和更新客服所需的完整知识体系
-- **Tools**: 知识整理、内容更新、结构化存储、版本管理
-- **输出**: 知识手册、更新内容、结构化知识、版本对比
+**Agent 2: 脚本与分镜编写师**
+- **上下文**: 创意策划、视频时长、叙事结构、视觉节奏
+- **输入变量**: `target_duration` (目标时长)、创意策划方案、`video_style` (视频风格)
+- **Prompt**: 编写详细的视频脚本和分镜头台本
+- **Tools**: n8n (OpenAI GPT-4)、Zapier (Script Writing Tools)、Make (Notion Integration)、Script Generation MCP
+- **输出**: 视频脚本、分镜头表、时间节点、画面描述
 
-**Agent 3: 案例库构建师**
-- **上下文**: 真实客服案例、问题解决方案、成功经验、失败教训
-- **Prompt**: 构建丰富的客服案例库，包含各种情况的处理示例
-- **Tools**: 案例收集、场景分类、解决方案、经验提炼
-- **输出**: 案例库、场景分类、处理流程、经验总结
+**Agent 3: 视觉素材生成专家**
+- **上下文**: 分镜需求、视觉风格、品牌元素、技术规格
+- **输入变量**: 分镜头表、`brand_assets` (品牌素材库)
+- **Prompt**: 生成或采集所需的视觉素材，包含图像、动画、图标等
+- **Tools**: n8n (Midjourney API)、Zapier (DALL-E Integration)、Make (Stock Video API)、Visual Content MCP
+- **输出**: 视觉素材库、动画元素、图标集合、背景素材
 
-**Agent 4: 培训课程设计师**
-- **上下文**: 学习目标、课程结构、教学方法、互动设计
-- **Prompt**: 设计结构化的培训课程和学习路径
-- **Tools**: 课程设计、教学规划、互动设计、进度安排
-- **输出**: 课程大纲、教学计划、互动环节、时间安排
+**Agent 4: 配音与音效制作师**
+- **上下文**: 脚本内容、语音风格、音效需求、音乐风格
+- **输入变量**: 视频脚本、语音配置要求
+- **Prompt**: 生成高质量的配音和音效，匹配视频节奏和情感
+- **Tools**: n8n (ElevenLabs API)、Zapier (Text-to-Speech)、Make (Audio Processing)、Voice Generation MCP
+- **输出**: 配音文件、音效库、背景音乐、音频时间轴
 
-**Agent 5: 培训材料制作师**
-- **上下文**: 课程内容、视觉设计、多媒体要求、可读性标准
-- **Prompt**: 制作专业的培训材料，包含PPT、手册、视频等
-- **Tools**: 内容制作、视觉设计、多媒体制作、格式转换
-- **输出**: 培训PPT、培训手册、视频教程、音频文件
+**Agent 5: 自动剪辑合成师**
+- **上下文**: 素材库、脚本时间轴、剪辑规则、平台规格
+- **输入变量**: `target_platforms` (目标平台)、所有素材文件
+- **Prompt**: 按照脚本和时间轴自动剪辑合成视频
+- **Tools**: n8n (Video Editing API)、Make (FFmpeg Integration)、Zapier (Video Processing)、Auto Edit MCP
+- **输出**: 初版视频、剪辑时间轴、转场效果、平台适配
 
-**Agent 6: 模拟演练设计师**
-- **上下文**: 真实场景、角色扮演、技能练习、反馈机制
-- **Prompt**: 设计客服模拟演练和角色扮演活动
-- **Tools**: 场景设计、角色定义、练习设计、评估标准
-- **输出**: 演练方案、角色脚本、评估标准、反馈模板
+**Agent 6: 字幕与特效添加师**
+- **上下文**: 视频内容、字幕样式、特效需求、品牌规范
+- **输入变量**: 初版视频、字幕配置、`brand_assets` (品牌素材)
+- **Prompt**: 添加字幕、特效和品牌元素，提升视频质量
+- **Tools**: n8n (Subtitle Generation)、Zapier (Video Effects API)、Make (Brand Overlay)、Effects MCP
+- **输出**: 完整视频文件、字幕文件、特效列表、品牌元素
 
-**Agent 7: 考核题库创建师**
-- **上下文**: 学习内容、考核标准、题型设计、难度分级
-- **Prompt**: 创建完整的考核题库和评估体系
-- **Tools**: 题目设计、答案编写、难度分级、评分标准
-- **输出**: 考核题库、评估标准、难度分级、答案解析
+**Agent 7: 多平台格式优化师**
+- **上下文**: 平台规格、编码标准、质量要求、上传规范
+- **输入变量**: `target_platforms` (目标平台)、完整视频文件
+- **Prompt**: 针对不同平台优化视频格式和质量
+- **Tools**: n8n (Video Converter API)、Zapier (Platform Optimizer)、Make (Quality Control)、Format Optimizer MCP
+- **输出**: 多平台视频版本、质量报告、上传指南
 
-**Agent 8: 培训效果评估与优化师**
-- **上下文**: 培训效果、学员反馈、技能提升、持续改进
-- **Prompt**: 评估培训效果，收集反馈并持续优化培训内容
-- **Tools**: 效果评估、反馈收集、数据分析、内容优化
-- **输出**: 效果报告、反馈汇总、优化建议、改进计划
+**Agent 8: 发布策略与分发专家**
+- **上下文**: 视频内容、平台特性、发布时机、推广策略
+- **输入变量**: 多平台视频版本、发布配置
+- **Prompt**: 制定发布策略并执行多平台分发
+- **Tools**: n8n (Social Media APIs)、Zapier (Publishing Tools)、Make (Analytics Integration)、Distribution MCP
+- **输出**: 发布计划、多平台链接、数据追踪、推广建议
 
 **Workflow 流程图**
 ```mermaid
 graph TD
-    A[📚 培训需求] --> B[🎯 培训需求分析师]
-    B --> C[📖 知识内容整理师]
-    C --> D[💼 案例库构建师]
-    D --> E[🎓 培训课程设计师]
-    E --> F[📋 培训材料制作师]
-    F --> G[🎭 模拟演练设计师]
-    G --> H[📝 考核题库创建师]
-    H --> I[📊 培训效果评估与优化师]
-    I --> J[🎯 完整客服培训体系]
+    A[💡 视频创意] --> B[📋 视频创意策划师]
+    B --> C[📝 脚本与分镜编写师]
+    C --> D[🎨 视觉素材生成专家]
+    C --> E[🎤 配音与音效制作师]
+    D --> F[✂️ 自动剪辑合成师]
+    E --> F
+    F --> G[📺 字幕与特效添加师]
+    G --> H[📱 多平台格式优化师]
+    H --> I[🚀 发布策略与分发专家]
+    I --> J[🎬 完整短视频作品]
+    
+    style A fill:#e1f5fe
+    style J fill:#c8e6c9
+    style F fill:#fff3e0
+```
+
+### 5. 播客节目制作流水线
+
+**Workflow 名称**
+AI驱动的播客节目全流程自动化制作平台
+
+**产物描述**
+基于主题内容，自动生成包含节目策划、脚本编写、音频制作、后期处理、分发推广的完整播客制作流程。
+
+**Start 参数**
+```json
+{
+  "podcast_topic": "string", // 播客主题
+  "episode_format": "string", // 节目格式（访谈/独白/多人讨论等）
+  "target_duration": "number", // 目标时长（分钟）
+  "voice_style": "object", // 声音风格偏好
+  "target_audience": "object", // 目标听众
+  "distribution_channels": "array" // 分发渠道
+}
+```
+
+**Agent 节点设计**
+
+**Agent 1: 节目内容策划师**
+- **上下文**: 播客主题、听众需求、行业趋势、内容价值
+- **输入变量**: `podcast_topic` (播客主题)、`target_audience` (目标听众)
+- **Prompt**: 深度策划播客内容，制定节目结构和传播价值
+- **Tools**: n8n (Content Research API)、Make (Trend Analysis)、Zapier (Audience Research)、Content Strategy MCP
+- **输出**: 内容策划方案、节目结构、价值点提炼、话题延展
+
+**Agent 2: 节目脚本创作师**
+- **上下文**: 内容策划、节目格式、语言风格、互动设计
+- **输入变量**: `episode_format` (节目格式)、内容策划方案、`target_duration` (目标时长)
+- **Prompt**: 创作引人入胜的播客脚本，确保内容流畅和听众参与
+- **Tools**: n8n (OpenAI GPT-4)、Zapier (Script Writing)、Make (Content Generation)、Script Creation MCP
+- **输出**: 播客脚本、互动环节、时间分配、关键话题
+
+**Agent 3: 嘉宾研究与邀请专家**
+- **上下文**: 节目主题、嘉宾背景、专业领域、访谈价值
+- **输入变量**: 播客脚本、嘉宾需求配置
+- **Prompt**: 研究和推荐合适的播客嘉宾，制定邀请策略
+- **Tools**: n8n (LinkedIn Research)、Zapier (Expert Database)、Make (Contact Management)、Expert Research MCP
+- **输出**: 嘉宾推荐清单、背景资料、邀请模板、访谈要点
+
+**Agent 4: 音频录制指导师**
+- **上下文**: 录制环境、设备配置、音质要求、技术标准
+- **输入变量**: `voice_style` (声音风格偏好)、录制要求
+- **Prompt**: 提供专业的音频录制指导和质量控制
+- **Tools**: n8n (Audio Guide API)、Make (Recording Standards)、Zapier (Quality Control)、Audio Guide MCP
+- **输出**: 录制指南、设备建议、环境要求、质量标准
+
+**Agent 5: AI配音与合成师**
+- **上下文**: 脚本内容、声音特性、情感表达、语言节奏
+- **输入变量**: 播客脚本、`voice_style` (声音风格)
+- **Prompt**: 使用AI技术生成高质量的播客配音
+- **Tools**: n8n (ElevenLabs API)、Zapier (Voice Synthesis)、Make (Audio Processing)、AI Voice MCP
+- **输出**: 高质量配音、多版本音频、情感层次、语音文件
+
+**Agent 6: 音频后期制作师**
+- **上下文**: 原始音频、后期标准、音效需求、品质要求
+- **输入变量**: 配音文件、后期制作要求
+- **Prompt**: 进行专业的音频后期处理，包含剪辑、混音、音效
+- **Tools**: n8n (Audio Editing API)、Make (Audio Processing)、Zapier (Music Library)、Audio Production MCP
+- **输出**: 最终音频文件、剪辑版本、音效应用、质量报告
+
+**Agent 7: 播客封面与推广素材设计师**
+- **上下文**: 节目主题、视觉设计、品牌元素、平台规范
+- **输入变量**: 播客内容、品牌规范配置
+- **Prompt**: 设计吸引人的播客封面和推广素材
+- **Tools**: n8n (Canva API)、Zapier (Design Tools)、Make (Brand Assets)、Visual Design MCP
+- **输出**: 播客封面、推广海报、社媒素材、品牌应用
+
+**Agent 8: 多平台分发与推广专家**
+- **上下文**: 播客内容、分发平台、推广策略、数据追踪
+- **输入变量**: `distribution_channels` (分发渠道)、完整播客文件
+- **Prompt**: 执行多平台分发和推广策略
+- **Tools**: n8n (Podcast APIs)、Zapier (Distribution Tools)、Make (Analytics)、Distribution MCP
+- **输出**: 分发确认、推广计划、数据追踪、增长策略
+
+**Workflow 流程图**
+```mermaid
+graph TD
+    A[🎙️ 播客主题] --> B[📋 节目内容策划师]
+    B --> C[📝 节目脚本创作师]
+    C --> D[👥 嘉宾研究与邀请专家]
+    C --> E[🎧 音频录制指导师]
+    E --> F[🤖 AI配音与合成师]
+    F --> G[🎵 音频后期制作师]
+    G --> H[🎨 播客封面与推广素材设计师]
+    H --> I[📡 多平台分发与推广专家]
+    I --> J[🎙️ 完整播客节目]
+    
+    style A fill:#e1f5fe
+    style J fill:#c8e6c9
+    style F fill:#fff3e0
+```
+
+---
+
+## 🏢 Business Operations (商业运营场景) 详细用例
+
+### 1. 智能报表自动化生成器
+
+**Workflow 名称**
+AI驱动的企业智能报表自动化制作平台
+
+**产物描述**
+基于业务数据和报告需求，自动生成包含数据分析、可视化图表、洞察发现、决策建议的专业业务报表。
+
+**Start 参数**
+```json
+{
+  "data_sources": "array", // 数据源列表
+  "report_type": "string", // 报表类型（财务/运营/销售等）
+  "time_period": "object", // 时间范围
+  "stakeholders": "array", // 报告对象
+  "analysis_depth": "string", // 分析深度
+  "output_format": "string" // 输出格式偏好
+}
+```
+
+**Agent 节点设计**
+
+**Agent 1: 数据源整合与验证专家**
+- **上下文**: 多源数据、数据质量、整合规则、验证标准
+- **输入变量**: `data_sources` (数据源列表)、数据质量要求
+- **Prompt**: 整合来自不同系统的业务数据，确保数据完整性和准确性
+- **Tools**: n8n (Database Connectors)、Zapier (Data Integration)、Make (ETL Tools)、Data Pipeline MCP
+- **输出**: 整合数据集、质量报告、异常识别、数据字典
+
+**Agent 2: 业务指标计算分析师**
+- **上下文**: 业务逻辑、KPI定义、计算公式、行业基准
+- **输入变量**: `report_type` (报表类型)、整合数据、`time_period` (时间范围)
+- **Prompt**: 计算关键业务指标，进行同环比分析和趋势识别
+- **Tools**: n8n (Analytics Engine)、Make (Business Intelligence)、Zapier (Calculation Tools)、Analytics MCP
+- **输出**: KPI计算结果、趋势分析、对比数据、异常发现
+
+**Agent 3: 数据洞察挖掘师**
+- **上下文**: 数据模式、业务逻辑、历史规律、市场因素
+- **输入变量**: KPI分析结果、`analysis_depth` (分析深度)
+- **Prompt**: 深度挖掘数据背后的业务洞察和价值发现
+- **Tools**: n8n (AI Analytics)、Zapier (Pattern Recognition)、Make (Insight Engine)、Business Intelligence MCP
+- **输出**: 业务洞察、关键发现、风险预警、机会识别
+
+**Agent 4: 可视化图表设计师**
+- **上下文**: 数据特性、图表类型、视觉最佳实践、受众需求
+- **输入变量**: 分析结果、`stakeholders` (报告对象)
+- **Prompt**: 设计清晰有效的数据可视化图表和仪表板
+- **Tools**: n8n (Chart Generation)、Make (Visualization Tools)、Zapier (Dashboard API)、Data Viz MCP
+- **输出**: 可视化图表、仪表板设计、交互元素、视觉规范
+
+**Agent 5: 报告结构设计师**
+- **上下文**: 报告目的、受众特点、信息层次、表达逻辑
+- **输入变量**: `stakeholders` (报告对象)、所有分析内容
+- **Prompt**: 设计符合受众需求的报告结构和信息架构
+- **Tools**: Make (Document Structure)、n8n (Template Engine)、Zapier (Content Organization)、Report Structure MCP
+- **输出**: 报告大纲、信息架构、逻辑流程、重点标识
+
+**Agent 6: 专业报告撰写师**
+- **上下文**: 商务写作、行业术语、逻辑表达、专业标准
+- **输入变量**: 报告结构、所有分析结果
+- **Prompt**: 撰写专业的商业报告内容，确保逻辑清晰和表达准确
+- **Tools**: n8n (Content Generation)、Zapier (Business Writing)、Make (Document Creation)、Professional Writing MCP
+- **输出**: 报告正文、执行摘要、关键结论、建议事项
+
+**Agent 7: 决策建议制定师**
+- **上下文**: 业务目标、资源限制、风险评估、最佳实践
+- **输入变量**: 业务洞察、风险分析结果
+- **Prompt**: 基于数据分析制定可操作的决策建议和行动计划
+- **Tools**: n8n (Decision Support)、Make (Strategy Tools)、Zapier (Planning Systems)、Decision Making MCP
+- **输出**: 决策建议、行动计划、优先级排序、风险评估
+
+**Agent 8: 报表格式化与分发专家**
+- **上下文**: 格式规范、分发渠道、权限控制、更新机制
+- **输入变量**: `output_format` (输出格式)、完整报告内容
+- **Prompt**: 格式化报表并执行自动分发和权限管理
+- **Tools**: n8n (Document Processing)、Zapier (Distribution Systems)、Make (Access Control)、Report Distribution MCP
+- **输出**: 最终报表、分发确认、访问统计、更新通知
+
+**Workflow 流程图**
+```mermaid
+graph TD
+    A[📊 业务数据] --> B[🔗 数据源整合与验证专家]
+    B --> C[📈 业务指标计算分析师]
+    C --> D[🔍 数据洞察挖掘师]
+    D --> E[📊 可视化图表设计师]
+    E --> F[📋 报告结构设计师]
+    F --> G[✍️ 专业报告撰写师]
+    G --> H[💡 决策建议制定师]
+    H --> I[📤 报表格式化与分发专家]
+    I --> J[📊 智能业务报表]
+    
+    style A fill:#e1f5fe
+    style J fill:#c8e6c9
+    style D fill:#fff3e0
+```
+
+### 2. 企业知识管理系统
+
+**Workflow 名称**
+AI驱动的企业知识管理与智能检索平台
+
+**产物描述**
+自动收集、整理、分类企业内部知识，构建智能知识库，提供便捷的知识检索、更新维护、协作分享功能。
+
+**Start 参数**
+```json
+{
+  "knowledge_sources": "array", // 知识来源
+  "organization_structure": "object", // 组织架构
+  "access_permissions": "object", // 访问权限配置
+  "knowledge_categories": "array", // 知识分类体系
+  "update_frequency": "string", // 更新频率
+  "collaboration_scope": "string" // 协作范围
+}
+```
+
+**Agent 节点设计**
+
+**Agent 1: 知识源扫描与收集专家**
+- **上下文**: 企业文档、邮件系统、会议记录、项目文档
+- **输入变量**: `knowledge_sources` (知识来源)、扫描规则配置
+- **Prompt**: 自动扫描和收集企业内部各类知识资源
+- **Tools**: n8n (File Scanner API)、Zapier (Document Crawler)、Make (Content Aggregator)、Knowledge Scanner MCP
+- **输出**: 知识资源清单、来源标识、质量评估、更新时间
+
+**Agent 2: 内容智能分类师**
+- **上下文**: 知识内容、分类标准、主题模型、语义理解
+- **输入变量**: `knowledge_categories` (知识分类体系)、收集到的知识资源
+- **Prompt**: 对收集的知识进行智能分类和标签化
+- **Tools**: n8n (NLP Classification)、Make (Topic Modeling)、Zapier (Content Analysis)、Classification MCP
+- **输出**: 分类结果、标签体系、置信度评分、分类建议
+
+**Agent 3: 知识内容提炼师**
+- **上下文**: 原始文档、核心要点、知识结构、表达规范
+- **输入变量**: 分类后的知识内容、提炼规则
+- **Prompt**: 提炼知识要点，生成结构化的知识条目
+- **Tools**: n8n (Content Extraction)、Zapier (Text Summarization)、Make (Structure Generation)、Knowledge Extraction MCP
+- **输出**: 结构化知识、核心要点、关键词、知识摘要
+
+**Agent 4: 知识关联图谱构建师**
+- **上下文**: 知识条目、关联关系、语义网络、企业架构
+- **输入变量**: 结构化知识、`organization_structure` (组织架构)
+- **Prompt**: 构建知识间的关联关系，建立知识图谱
+- **Tools**: n8n (Graph Database)、Make (Relationship Mapping)、Zapier (Semantic Network)、Knowledge Graph MCP
+- **输出**: 知识图谱、关联关系、导航路径、相关推荐
+
+**Agent 5: 智能搜索引擎构建师**
+- **上下文**: 知识库结构、用户查询模式、搜索算法、个性化需求
+- **输入变量**: 知识图谱、搜索需求配置
+- **Prompt**: 构建智能的知识搜索和推荐系统
+- **Tools**: n8n (Search Engine API)、Zapier (Vector Database)、Make (Recommendation Engine)、Search System MCP
+- **输出**: 搜索系统、推荐算法、相关性评分、个性化配置
+
+**Agent 6: 访问控制与权限管理师**
+- **上下文**: 组织架构、岗位职责、安全等级、知识敏感度
+- **输入变量**: `access_permissions` (访问权限配置)、`organization_structure` (组织架构)
+- **Prompt**: 建立知识访问控制和权限管理体系
+- **Tools**: n8n (Access Control API)、Make (Permission System)、Zapier (Security Management)、Access Control MCP
+- **输出**: 权限体系、访问规则、安全配置、审计日志
+
+**Agent 7: 知识更新与维护专家**
+- **上下文**: 知识生命周期、更新规则、版本管理、质量控制
+- **输入变量**: `update_frequency` (更新频率)、知识维护规则
+- **Prompt**: 建立知识的持续更新和质量维护机制
+- **Tools**: n8n (Version Control)、Zapier (Update Automation)、Make (Quality Monitoring)、Knowledge Maintenance MCP
+- **输出**: 更新机制、版本管理、质量监控、维护计划
+
+**Agent 8: 协作分享平台管理员**
+- **上下文**: 协作需求、分享机制、用户体验、平台功能
+- **输入变量**: `collaboration_scope` (协作范围)、平台配置
+- **Prompt**: 建立知识协作和分享平台，促进知识流通
+- **Tools**: n8n (Collaboration Tools)、Make (Sharing Platform)、Zapier (Team Integration)、Collaboration MCP
+- **输出**: 协作平台、分享机制、用户界面、互动功能
+
+**Workflow 流程图**
+```mermaid
+graph TD
+    A[📚 企业知识] --> B[🔍 知识源扫描与收集专家]
+    B --> C[🏷️ 内容智能分类师]
+    C --> D[📝 知识内容提炼师]
+    D --> E[🕸️ 知识关联图谱构建师]
+    E --> F[🔍 智能搜索引擎构建师]
+    F --> G[🔒 访问控制与权限管理师]
+    G --> H[🔄 知识更新与维护专家]
+    H --> I[🤝 协作分享平台管理员]
+    I --> J[🧠 企业知识管理系统]
     
     style A fill:#e1f5fe
     style J fill:#c8e6c9
     style E fill:#fff3e0
 ```
 
----
-
-## ✍️ Content Creation (内容创作场景) 详细用例
-
-### 1. Product Hunt 全媒体内容生产器
+### 3. 供应链智能优化系统
 
 **Workflow 名称**
-Product Hunt 热门产品全媒体内容自动化生产平台
+AI驱动的供应链全链路智能优化平台
 
 **产物描述**
-基于当日 Product Hunt Top 10 产品，自动生成包含深度文章、可视化网页、音频播客、社媒内容的完整内容矩阵，并统一发送汇总。
+基于历史数据和市场预测，自动优化采购计划、库存管理、物流配送，降低成本，提升效率。
 
 **Start 参数**
 ```json
 {
-  "target_date": "string", // 目标日期（默认今日）
-  "content_language": "string", // 内容语言（中文/英文/双语）
-  "content_style": "string", // 内容风格（科技资讯/创业观察/产品评测）
-  "output_channels": "array", // 输出渠道（邮箱/微信/网站等）
-  "depth_level": "string" // 内容深度（简要/标准/深度）
+  "supply_chain_data": "object", // 供应链历史数据
+  "business_constraints": "object", // 业务约束条件
+  "optimization_goals": "array", // 优化目标
+  "supplier_information": "array", // 供应商信息
+  "demand_forecast": "object", // 需求预测数据
+  "cost_parameters": "object" // 成本参数配置
 }
 ```
 
 **Agent 节点设计**
 
-**Agent 1: Product Hunt 数据采集专家**
-- **上下文**: Product Hunt API、排行榜规则、产品信息结构
-- **Prompt**: 抓取指定日期的热门产品完整信息，包含产品详情、用户反馈等
-- **Tools**: Product Hunt API、Web Scraper、Google Sheets、Airtable
-- **输出**: 产品数据清单、官网截图、用户评论汇总、基础信息结构
+**Agent 1: 需求预测分析师**
+- **上下文**: 历史销售数据、季节性因素、市场趋势、外部影响
+- **输入变量**: `supply_chain_data` (供应链历史数据)、`demand_forecast` (需求预测数据)
+- **Prompt**: 基于多维数据进行精准的需求预测和趋势分析
+- **Tools**: n8n (Time Series Analysis)、Make (Forecasting Models)、Zapier (Machine Learning APIs)、Demand Prediction MCP
+- **输出**: 需求预测、趋势分析、不确定性评估、关键驱动因素
 
-**Agent 2: 产品深度分析研究员**
-- **上下文**: 产品信息、竞品对比、市场定位、技术特点
-- **Prompt**: 对每个产品进行深度分析，包含商业模式、技术亮点、市场价值
-- **Tools**: Google Search、Crunchbase、SimilarWeb、Notion
-- **输出**: 产品深度分析报告、亮点提炼、市场定位分析
+**Agent 2: 供应商评估与选择专家**
+- **上下文**: 供应商能力、价格体系、质量标准、服务水平
+- **输入变量**: `supplier_information` (供应商信息)、`business_constraints` (业务约束条件)
+- **Prompt**: 评估供应商综合能力，优化供应商组合配置
+- **Tools**: n8n (Supplier Analytics)、Zapier (Vendor Management)、Make (Performance Analysis)、Supplier Evaluation MCP
+- **输出**: 供应商评分、选择建议、风险评估、合作策略
 
-**Agent 3: 多格式文章创作编辑**
-- **上下文**: 产品分析、目标读者、内容风格、文章结构
-- **Prompt**: 创作适合不同平台的文章内容，包含公众号、博客、newsletter等
-- **Tools**: Google Docs、Notion、Grammarly、Hemingway Editor
-- **输出**: 多格式文章内容、标题优化建议、SEO关键词
+**Agent 3: 采购计划优化师**
+- **上下文**: 需求预测、供应商能力、采购成本、交期要求
+- **输入变量**: 需求预测结果、供应商评估、`cost_parameters` (成本参数)
+- **Prompt**: 制定最优的采购计划和订单分配策略
+- **Tools**: n8n (Optimization Engine)、Make (Procurement Planning)、Zapier (Cost Analysis)、Procurement Optimization MCP
+- **输出**: 采购计划、订单分配、成本预测、风险控制
 
-**Agent 4: 可视化网页设计师**
-- **上下文**: 产品信息、视觉设计趋势、用户体验最佳实践
-- **Prompt**: 创建美观的可视化网页展示产品信息和分析内容
-- **Tools**: Webflow、Framer、Figma、Canva
-- **输出**: 完整网页文件、移动端适配、可视化图表、交互元素
+**Agent 4: 库存管理优化师**
+- **上下文**: 库存成本、周转率、安全库存、存储约束
+- **输入变量**: 采购计划、`optimization_goals` (优化目标)
+- **Prompt**: 优化库存水平和补货策略，平衡成本和服务水平
+- **Tools**: n8n (Inventory Optimization)、Zapier (Stock Management)、Make (Warehouse Analytics)、Inventory Management MCP
+- **输出**: 库存策略、补货计划、安全库存、周转优化
 
-**Agent 5: 音频播客制作人**
-- **上下文**: 文章内容、播客格式、语音风格、背景音乐
-- **Prompt**: 将产品介绍转化为音频播客内容，包含解说和音效
-- **Tools**: ElevenLabs、Descript、Audacity、Spotify for Podcasters
-- **输出**: 高质量音频文件、播客封面、播放列表、发布指南
+**Agent 5: 物流配送路径规划师**
+- **上下文**: 配送网络、运输成本、时效要求、车辆约束
+- **输入变量**: 库存分布、配送需求、物流约束
+- **Prompt**: 规划最优的物流配送路径和运输方案
+- **Tools**: n8n (Route Optimization)、Make (Logistics Planning)、Zapier (Transportation Management)、Logistics Optimization MCP
+- **输出**: 配送路径、运输计划、成本分析、时效保证
 
-**Agent 6: 社媒内容矩阵创作师**
-- **上下文**: 核心内容、各平台特性、用户习惯、传播规律
-- **Prompt**: 基于核心内容创作适合不同社媒平台的传播内容
-- **Tools**: Canva、Buffer、Hootsuite、Google Docs
-- **输出**: 多平台社媒内容、发布时机建议、互动策略指南
+**Agent 6: 成本控制分析师**
+- **上下文**: 总成本构成、成本驱动因素、预算约束、成本目标
+- **输入变量**: `cost_parameters` (成本参数)、所有优化结果
+- **Prompt**: 分析和控制供应链总成本，提供成本优化建议
+- **Tools**: n8n (Cost Analysis)、Zapier (Financial Analytics)、Make (Budget Control)、Cost Management MCP
+- **输出**: 成本分析、预算对比、优化建议、节约潜力
 
-**Agent 7: 内容质量控制专家**
-- **上下文**: 所有产出内容、质量标准、品牌一致性、准确性要求
-- **Prompt**: 对所有内容进行质量检查，确保准确性和一致性
-- **Tools**: Grammarly、Google Docs、Notion、Google Search
-- **输出**: 质量检查报告、修改建议、最终版本确认
+**Agent 7: 风险监控预警师**
+- **上下文**: 供应风险、市场变化、异常事件、应急预案
+- **输入变量**: 供应链配置、风险参数配置
+- **Prompt**: 监控供应链风险，提供预警和应急处理建议
+- **Tools**: n8n (Risk Monitoring)、Make (Alert System)、Zapier (Risk Analytics)、Risk Management MCP
+- **输出**: 风险评估、预警信息、应急预案、缓解措施
 
-**Agent 8: 内容整合与分发员**
-- **上下文**: 所有完成内容、分发渠道、接收方信息、发送模板
-- **Prompt**: 整合所有内容链接和文件，按要求发送到指定渠道
-- **Tools**: Gmail、Mailchimp、Google Drive、Notion
-- **输出**: 内容汇总页面、发送确认、访问统计、用户反馈收集
+**Agent 8: 供应链绩效监控师**
+- **上下文**: KPI体系、绩效基准、监控指标、改进机会
+- **输入变量**: 所有供应链运营数据、绩效目标
+- **Prompt**: 监控供应链绩效，提供持续改进建议
+- **Tools**: n8n (Performance Analytics)、Zapier (KPI Dashboard)、Make (Continuous Improvement)、Performance Monitoring MCP
+- **输出**: 绩效报告、改进建议、优化机会、最佳实践
 
 **Workflow 流程图**
 ```mermaid
 graph TD
-    A[🚀 Product Hunt 热门产品] --> B[📊 数据采集专家]
-    B --> C[🔍 产品深度分析研究员]
-    C --> D[✍️ 多格式文章创作编辑]
-    C --> E[🌐 可视化网页设计师]
-    C --> F[🎧 音频播客制作人]
-    C --> G[📱 社媒内容矩阵创作师]
-    D --> H[✅ 内容质量控制专家]
-    E --> H
-    F --> H
-    G --> H
-    H --> I[📦 内容整合与分发员]
-    I --> J[📋 全媒体内容矩阵]
+    A[📊 供应链数据] --> B[📈 需求预测分析师]
+    B --> C[🏭 供应商评估与选择专家]
+    C --> D[📋 采购计划优化师]
+    D --> E[📦 库存管理优化师]
+    E --> F[🚚 物流配送路径规划师]
+    F --> G[💰 成本控制分析师]
+    G --> H[⚠️ 风险监控预警师]
+    H --> I[📊 供应链绩效监控师]
+    I --> J[⚙️ 智能供应链优化系统]
+    
+    style A fill:#e1f5fe
+    style J fill:#c8e6c9
+    style D fill:#fff3e0
+```
+
+---
+
+## 🎓 Education & Training (教育培训场景) 详细用例
+
+### 1. 个性化学习路径生成器
+
+**Workflow 名称**
+AI驱动的个性化学习路径智能规划平台
+
+**产物描述**
+基于学员能力评估和学习目标，自动生成个性化的学习路径，包含课程推荐、进度安排、难度调节、效果评估。
+
+**Start 参数**
+```json
+{
+  "learner_profile": "object", // 学员基础信息
+  "learning_goals": "array", // 学习目标
+  "skill_assessment": "object", // 技能评估结果
+  "time_constraints": "object", // 时间限制
+  "learning_preferences": "object", // 学习偏好
+  "available_resources": "array" // 可用学习资源
+}
+```
+
+**Agent 节点设计**
+
+**Agent 1: 学员能力全面评估师**
+- **上下文**: 学员背景、技能基础、学习历史、认知特点
+- **输入变量**: `learner_profile` (学员基础信息)、`skill_assessment` (技能评估结果)
+- **Prompt**: 全面评估学员的当前能力水平和学习特征
+- **Tools**: n8n (Assessment Engine)、Make (Skill Analysis)、Zapier (Learning Analytics)、Capability Assessment MCP
+- **输出**: 能力报告、技能差距、学习特征、发展潜力
+
+**Agent 2: 学习目标分解规划师**
+- **上下文**: 学习目标、知识体系、技能层次、学习理论
+- **输入变量**: `learning_goals` (学习目标)、能力评估结果
+- **Prompt**: 将学习目标分解为具体的知识点和技能要求
+- **Tools**: n8n (Goal Decomposition)、Zapier (Learning Design)、Make (Curriculum Planning)、Goal Planning MCP
+- **输出**: 目标分解、知识图谱、技能树、学习里程碑
+
+**Agent 3: 个性化课程推荐师**
+- **上下文**: 课程资源、内容质量、难度等级、学习方式
+- **输入变量**: `available_resources` (可用学习资源)、`learning_preferences` (学习偏好)
+- **Prompt**: 根据学员特点推荐最适合的课程和学习资源
+- **Tools**: n8n (Recommendation Engine)、Make (Content Matching)、Zapier (Course Database)、Course Recommendation MCP
+- **输出**: 课程推荐、资源清单、适配理由、替代选择
+
+**Agent 4: 学习进度智能安排师**
+- **上下文**: 时间约束、学习强度、认知负荷、效率优化
+- **输入变量**: `time_constraints` (时间限制)、课程推荐结果
+- **Prompt**: 制定合理的学习进度安排和时间分配
+- **Tools**: n8n (Schedule Optimization)、Zapier (Time Management)、Make (Progress Planning)、Learning Schedule MCP
+- **输出**: 学习计划、进度安排、时间分配、调整建议
+
+**Agent 5: 难度自适应调节师**
+- **上下文**: 学习反馈、掌握程度、挑战水平、动机维持
+- **输入变量**: 学习进度、实时学习数据
+- **Prompt**: 根据学习效果动态调整内容难度和学习策略
+- **Tools**: n8n (Adaptive Learning)、Make (Difficulty Adjustment)、Zapier (Learning Analytics)、Adaptive Learning MCP
+- **输出**: 难度调整、策略优化、个性化建议、学习支持
+
+**Agent 6: 学习效果评估师**
+- **上下文**: 评估标准、学习目标、能力提升、知识掌握
+- **输入变量**: 学习过程数据、评估配置
+- **Prompt**: 评估学习效果，提供反馈和改进建议
+- **Tools**: n8n (Learning Assessment)、Zapier (Progress Tracking)、Make (Performance Analysis)、Learning Evaluation MCP
+- **输出**: 效果评估、进步报告、薄弱环节、强化建议
+
+**Agent 7: 学习动机激励师**
+- **上下文**: 激励机制、成就感、社交学习、游戏化元素
+- **输入变量**: 学习进展、学员特征
+- **Prompt**: 设计激励机制，维持学习动机和参与度
+- **Tools**: n8n (Gamification Engine)、Make (Motivation System)、Zapier (Social Learning)、Motivation Enhancement MCP
+- **输出**: 激励方案、成就系统、社交元素、动机维持
+
+**Agent 8: 学习路径持续优化师**
+- **上下文**: 学习数据、效果反馈、路径调整、持续改进
+- **输入变量**: 所有学习数据、效果评估结果
+- **Prompt**: 基于学习数据持续优化学习路径和策略
+- **Tools**: n8n (Optimization Engine)、Zapier (Data Analytics)、Make (Continuous Improvement)、Path Optimization MCP
+- **输出**: 路径优化、策略调整、改进建议、最佳实践
+
+**Workflow 流程图**
+```mermaid
+graph TD
+    A[👤 学员信息] --> B[📊 学员能力全面评估师]
+    B --> C[🎯 学习目标分解规划师]
+    C --> D[📚 个性化课程推荐师]
+    D --> E[📅 学习进度智能安排师]
+    E --> F[⚖️ 难度自适应调节师]
+    F --> G[📈 学习效果评估师]
+    G --> H[🎮 学习动机激励师]
+    H --> I[🔄 学习路径持续优化师]
+    I --> J[🎓 个性化学习路径]
+    
+    style A fill:#e1f5fe
+    style J fill:#c8e6c9
+    style F fill:#fff3e0
+```
+
+## 💻 Technical Development (技术开发场景) 详细用例
+
+### 1. 代码自动化生成与优化系统
+
+**Workflow 名称**
+AI驱动的代码智能生成与质量优化平台
+
+**产物描述**
+基于需求文档和技术规范，自动生成高质量代码，包含架构设计、代码实现、测试用例、文档生成的完整开发流程。
+
+**Start 参数**
+```json
+{
+  "requirements_doc": "string", // 需求文档
+  "tech_stack": "object", // 技术栈选择
+  "coding_standards": "object", // 编码规范
+  "project_structure": "object", // 项目结构要求
+  "performance_requirements": "object", // 性能要求
+  "testing_requirements": "object" // 测试要求
+}
+```
+
+**Agent 节点设计**
+
+**Agent 1: 需求分析与架构设计师**
+- **上下文**: 需求文档、技术约束、系统架构、设计模式
+- **输入变量**: `requirements_doc` (需求文档)、`tech_stack` (技术栈选择)
+- **Prompt**: 分析需求并设计系统架构和技术方案
+- **Tools**: n8n (Architecture Tools)、Make (Design Patterns)、Zapier (Requirement Analysis)、System Design MCP
+- **输出**: 架构设计、技术方案、模块划分、接口定义
+
+**Agent 2: 核心代码生成专家**
+- **上下文**: 架构设计、编程语言、框架特性、最佳实践
+- **输入变量**: 架构设计、`coding_standards` (编码规范)
+- **Prompt**: 基于架构设计生成高质量的核心业务代码
+- **Tools**: n8n (Code Generation API)、Make (GitHub Copilot)、Zapier (AI Coding Tools)、Code Generation MCP
+- **输出**: 核心代码、类库实现、业务逻辑、数据模型
+
+**Agent 3: 数据库设计与实现师**
+- **上下文**: 数据需求、数据库设计、性能优化、数据安全
+- **输入变量**: 需求分析、数据结构要求
+- **Prompt**: 设计数据库结构并生成相关代码
+- **Tools**: n8n (Database Design)、Zapier (SQL Generation)、Make (ORM Tools)、Database Design MCP
+- **输出**: 数据库设计、SQL脚本、ORM映射、数据访问层
+
+**Agent 4: API接口设计开发师**
+- **上下文**: 接口规范、RESTful设计、API文档、安全认证
+- **输入变量**: 接口定义、`project_structure` (项目结构要求)
+- **Prompt**: 设计和实现标准化的API接口
+- **Tools**: n8n (API Design Tools)、Make (OpenAPI Generator)、Zapier (API Testing)、API Development MCP
+- **输出**: API实现、接口文档、认证机制、错误处理
+
+**Agent 5: 前端界面生成师**
+- **上下文**: UI设计、用户体验、响应式布局、前端框架
+- **输入变量**: UI需求、前端技术栈
+- **Prompt**: 生成用户友好的前端界面代码
+- **Tools**: n8n (Frontend Generators)、Zapier (UI Frameworks)、Make (Component Libraries)、Frontend Generation MCP
+- **输出**: 前端代码、组件库、样式文件、交互逻辑
+
+**Agent 6: 测试用例生成师**
+- **上下文**: 测试策略、覆盖率要求、测试框架、质量标准
+- **输入变量**: `testing_requirements` (测试要求)、生成的代码
+- **Prompt**: 为所有代码模块生成全面的测试用例
+- **Tools**: n8n (Test Generation)、Make (Testing Frameworks)、Zapier (Coverage Tools)、Test Generation MCP
+- **输出**: 测试用例、测试脚本、覆盖率报告、性能测试
+
+**Agent 7: 代码质量优化师**
+- **上下文**: 代码规范、性能优化、安全检查、可维护性
+- **输入变量**: `performance_requirements` (性能要求)、所有生成代码
+- **Prompt**: 优化代码质量，确保性能和安全标准
+- **Tools**: n8n (Code Analysis)、Zapier (Quality Gates)、Make (Performance Tools)、Code Optimization MCP
+- **输出**: 优化建议、性能报告、安全检查、重构方案
+
+**Agent 8: 文档与部署生成师**
+- **上下文**: 项目文档、部署流程、运维要求、用户手册
+- **输入变量**: 完整项目代码、部署配置
+- **Prompt**: 生成完整的项目文档和部署配置
+- **Tools**: n8n (Documentation Tools)、Make (Deployment Automation)、Zapier (DevOps Tools)、Documentation MCP
+- **输出**: 技术文档、部署脚本、运维手册、用户指南
+
+**Workflow 流程图**
+```mermaid
+graph TD
+    A[📋 需求文档] --> B[🏗️ 需求分析与架构设计师]
+    B --> C[💻 核心代码生成专家]
+    B --> D[🗄️ 数据库设计与实现师]
+    B --> E[🔌 API接口设计开发师]
+    C --> F[🖥️ 前端界面生成师]
+    D --> F
+    E --> F
+    F --> G[🧪 测试用例生成师]
+    G --> H[⚡ 代码质量优化师]
+    H --> I[📚 文档与部署生成师]
+    I --> J[🚀 完整软件项目]
     
     style A fill:#e1f5fe
     style J fill:#c8e6c9
@@ -1137,134 +786,250 @@ graph TD
 
 ---
 
-### 2. 多媒体课程制作助手
+## 🎨 Creative Design (创意设计场景) 详细用例
+
+### 1. 品牌视觉系统设计器
 
 **Workflow 名称**
-AI驱动的在线课程全流程制作平台
+AI驱动的品牌视觉识别系统智能设计平台
 
 **产物描述**
-基于课程主题和教学目标，自动生成完整的在线课程内容，包含课程大纲、视频脚本、PPT演示、练习题库、学习资料等。
+基于品牌定位和设计需求，自动生成完整的品牌视觉识别系统，包含logo设计、色彩搭配、字体选择、应用规范等。
 
 **Start 参数**
 ```json
 {
-  "course_topic": "string", // 课程主题
-  "target_audience": "string", // 目标学员群体
-  "course_duration": "string", // 课程时长
-  "difficulty_level": "string", // 难度级别
-  "learning_objectives": "array", // 学习目标
-  "preferred_format": "string" // 偏好格式（视频/直播/混合）
+  "brand_brief": "object", // 品牌简报
+  "target_market": "object", // 目标市场
+  "design_preferences": "object", // 设计偏好
+  "application_scenarios": "array", // 应用场景
+  "competitor_analysis": "object", // 竞品分析
+  "budget_constraints": "object" // 预算约束
 }
 ```
 
 **Agent 节点设计**
 
-**Agent 1: 课程架构设计师**
-- **上下文**: 课程主题、学习目标、目标受众、教学理论
-- **Prompt**: 设计课程整体架构，制定学习路径和知识体系
-- **Tools**: Notion、Miro、Google Docs、Airtable
-- **输出**: 课程架构图、学习路径、知识点分解、进度安排
+**Agent 1: 品牌策略分析师**
+- **上下文**: 品牌定位、市场环境、目标受众、品牌价值
+- **输入变量**: `brand_brief` (品牌简报)、`target_market` (目标市场)
+- **Prompt**: 深度分析品牌策略，确定设计方向和视觉传达目标
+- **Tools**: n8n (Brand Analysis)、Make (Market Research)、Zapier (Strategy Tools)、Brand Strategy MCP
+- **输出**: 品牌策略、设计方向、传达目标、差异化定位
 
-**Agent 2: 详细大纲编写专家**
-- **上下文**: 课程架构、教学目标、时间分配、重点难点
-- **Prompt**: 编写详细的课程大纲，包含每个章节的目标和重点
-- **Tools**: Google Docs、Notion、Microsoft Word、Google Sheets
-- **输出**: 详细课程大纲、章节目标、重点难点标识、时间分配表
+**Agent 2: 视觉风格定义师**
+- **上下文**: 设计趋势、美学理论、文化背景、情感表达
+- **输入变量**: `design_preferences` (设计偏好)、品牌策略
+- **Prompt**: 定义品牌的核心视觉风格和设计语言
+- **Tools**: n8n (Style Analysis)、Zapier (Design Trends)、Make (Aesthetic Tools)、Visual Style MCP
+- **输出**: 视觉风格指南、设计原则、美学基调、表达方式
 
-**Agent 3: 教学内容创作师**
-- **上下文**: 课程大纲、专业知识、案例素材、教学方法
-- **Prompt**: 创作丰富的教学内容，包含理论讲解、案例分析、实践指导
-- **Tools**: Google Docs、Notion、Google Search、Wikipedia
-- **输出**: 教学内容文稿、案例库、实践指导、补充资料
+**Agent 3: Logo与标识设计师**
+- **上下文**: Logo设计原理、符号学、识别性、适用性
+- **输入变量**: 视觉风格指南、`competitor_analysis` (竞品分析)
+- **Prompt**: 设计独特且具有识别性的品牌logo和标识
+- **Tools**: n8n (Logo Generation)、Make (Design Tools)、Zapier (AI Design)、Logo Design MCP
+- **输出**: Logo设计、标识变体、应用规范、使用指南
 
-**Agent 4: 视频脚本编剧师**
-- **上下文**: 教学内容、视频制作要求、表达方式、视觉元素
-- **Prompt**: 将教学内容转化为适合视频录制的脚本和分镜
-- **Tools**: Google Docs、Notion、Celtx、Final Draft
-- **输出**: 视频脚本、分镜头表、视觉设计要求、录制指导
+**Agent 4: 色彩体系规划师**
+- **上下文**: 色彩心理学、品牌色彩、搭配原理、文化象征
+- **输入变量**: 品牌定位、视觉风格
+- **Prompt**: 建立完整的品牌色彩体系和搭配方案
+- **Tools**: n8n (Color Analysis)、Zapier (Color Tools)、Make (Palette Generator)、Color System MCP
+- **输出**: 主色调、辅助色、色彩搭配、应用指南
 
-**Agent 5: PPT演示设计师**
-- **上下文**: 教学内容、视觉设计规范、信息层次、演示效果
-- **Prompt**: 设计专业美观的PPT演示文稿，支持教学和展示
-- **Tools**: Microsoft PowerPoint、Google Slides、Canva、Figma
-- **输出**: PPT模板、演示文稿、设计规范、使用指南
+**Agent 5: 字体与排版设计师**
+- **上下文**: 字体特性、可读性、品牌匹配、文化适应性
+- **输入变量**: 品牌特征、`application_scenarios` (应用场景)
+- **Prompt**: 选择和设计符合品牌特征的字体系统
+- **Tools**: n8n (Typography Tools)、Make (Font Analysis)、Zapier (Type Design)、Typography MCP
+- **输出**: 字体选择、排版规范、层次系统、应用指南
 
-**Agent 6: 互动练习设计师**
-- **上下文**: 学习目标、知识点、评估方式、题型设计
-- **Prompt**: 设计多样化的练习题和互动环节，巩固学习效果
-- **Tools**: Google Forms、Typeform、Kahoot、Quizizz
-- **输出**: 练习题库、互动设计、评估标准、反馈模板
+**Agent 6: 视觉元素设计师**
+- **上下文**: 图形设计、装饰元素、图案纹理、视觉辅助
+- **输入变量**: 视觉风格、色彩体系
+- **Prompt**: 设计配套的视觉元素和图形系统
+- **Tools**: n8n (Graphic Design)、Zapier (Element Generator)、Make (Pattern Tools)、Visual Elements MCP
+- **输出**: 图形元素、装饰纹样、辅助图案、应用示例
 
-**Agent 7: 学习资料整理师**
-- **上下文**: 课程内容、扩展阅读、工具推荐、参考资料
-- **Prompt**: 整理和推荐相关学习资料，提供学习支持
-- **Tools**: Google Search、Google Scholar、Notion、Google Drive
-- **输出**: 学习资料包、推荐清单、工具指南、延伸阅读
+**Agent 7: 应用系统设计师**
+- **上下文**: 应用场景、媒体特性、使用环境、技术要求
+- **输入变量**: `application_scenarios` (应用场景)、所有设计元素
+- **Prompt**: 设计品牌在各种场景下的应用方案
+- **Tools**: n8n (Application Design)、Make (Mockup Tools)、Zapier (Template Generator)、Application Design MCP
+- **输出**: 应用设计、使用示例、规范指南、模板文件
 
-**Agent 8: 课程包装与发布专家**
-- **上下文**: 所有课程内容、平台要求、营销需求、用户体验
-- **Prompt**: 整合所有内容，进行专业包装并准备发布
-- **Tools**: Thinkific、Teachable、Google Drive、Canva
-- **输出**: 完整课程包、发布计划、推广策略、运营指南
+**Agent 8: 品牌手册编制师**
+- **上下文**: 设计规范、使用标准、管理制度、质量控制
+- **输入变量**: `budget_constraints` (预算约束)、所有设计成果
+- **Prompt**: 编制完整的品牌视觉识别手册和使用规范
+- **Tools**: n8n (Manual Generator)、Zapier (Documentation)、Make (Brand Guidelines)、Brand Manual MCP
+- **输出**: 品牌手册、使用规范、管理制度、实施指南
 
 **Workflow 流程图**
 ```mermaid
 graph TD
-    A[🎯 课程主题] --> B[🏗️ 课程架构设计师]
-    B --> C[📋 详细大纲编写专家]
-    C --> D[📚 教学内容创作师]
-    D --> E[🎬 视频脚本编剧师]
-    D --> F[📊 PPT演示设计师]
-    D --> G[🎮 互动练习设计师]
-    E --> H[📖 学习资料整理师]
-    F --> H
-    G --> H
-    H --> I[📦 课程包装与发布专家]
-    I --> J[🎓 完整在线课程]
+    A[🏢 品牌需求] --> B[📊 品牌策略分析师]
+    B --> C[🎨 视觉风格定义师]
+    C --> D[🖼️ Logo与标识设计师]
+    C --> E[🌈 色彩体系规划师]
+    C --> F[📝 字体与排版设计师]
+    D --> G[🎯 视觉元素设计师]
+    E --> G
+    F --> G
+    G --> H[📱 应用系统设计师]
+    H --> I[📚 品牌手册编制师]
+    I --> J[🎨 完整品牌视觉系统]
     
     style A fill:#e1f5fe
     style J fill:#c8e6c9
-    style B fill:#fff3e0
+    style C fill:#fff3e0
 ```
 
 ---
 
-### 3. AI插画师与图文内容自动生成器
+## 📊 Data Processing & Integration (数据处理与集成场景) 详细用例
+
+### 1. Excel工作流自动化系统
 
 **Workflow 名称**
-AI驱动的多模态创意内容自动化生产系统
+AI驱动的Excel数据处理与工作流自动化平台
 
 **产物描述**
-基于文字描述或主题概念，自动生成配套的插画、图片和图文内容，包含多种风格适配、尺寸优化、品牌一致性保证等完整视觉内容解决方案。
+自动化处理Excel数据任务，包含数据清洗、格式转换、计算分析、报表生成、多系统集成的完整数据处理流程。
 
 **Start 参数**
 ```json
 {
-  "content_theme": "string", // 内容主题或描述
-  "visual_style": "string", // 视觉风格偏好（插画/摄影/简约/卡通等）
-  "brand_guidelines": "object", // 品牌视觉规范
-  "output_formats": "array", // 输出格式需求（海报/banner/社交媒体等）
-  "target_platforms": "array", // 目标平台（微信/微博/小红书/Instagram等）
-  "quantity_requirements": "object" // 数量需求
+  "excel_files": "array", // Excel文件列表
+  "processing_rules": "object", // 处理规则配置
+  "output_requirements": "object", // 输出要求
+  "integration_targets": "array", // 集成目标系统
+  "automation_schedule": "object", // 自动化计划
+  "quality_standards": "object" // 质量标准
 }
 ```
 
 **Agent 节点设计**
 
-**Agent 1: 创意概念分析师**
-- **上下文**: 内容主题、目标受众、传播目标、文化背景
-- **Prompt**: 深度分析创意概念，提炼视觉表达要点和情感传达目标
-- **Tools**: 概念分析、关键词提取、情感映射、视觉元素识别
-- **输出**: 创意概念报告、视觉关键词、情感色调定义、表达要求
+**Agent 1: Excel文件智能解析师**
+- **上下文**: Excel结构、数据格式、工作表关系、数据类型
+- **输入变量**: `excel_files` (Excel文件列表)、文件结构配置
+- **Prompt**: 智能解析Excel文件结构，识别数据模式和关系
+- **Tools**: n8n (Excel Parser API)、Zapier (Spreadsheet Tools)、Make (Data Analysis)、Excel Processing MCP
+- **输出**: 文件结构、数据模式、字段映射、关系识别
 
-**Agent 2: AI图像生成专家**
-- **上下文**: 创意概念、风格要求、技术参数、质量标准
-- **Prompt**: 使用AI图像生成技术创作符合要求的原创插画和图片
-- **Tools**: DALL-E、Midjourney、Stable Diffusion、Leonardo AI
-- **输出**: 多版本原创图像、风格变体、高分辨率文件
+**Agent 2: 数据清洗与标准化专家**
+- **上下文**: 数据质量、清洗规则、标准化要求、异常处理
+- **输入变量**: `processing_rules` (处理规则配置)、解析后数据
+- **Prompt**: 清洗和标准化Excel数据，确保数据质量
+- **Tools**: n8n (Data Cleaning)、Make (Quality Control)、Zapier (Data Validation)、Data Cleaning MCP
+- **输出**: 清洗后数据、质量报告、异常记录、标准化结果
 
-**Agent 3: 视觉风格统一师**
-- **上下文**: 生成图像、品牌规范、风格一致性要求、平台特征
+**Agent 3: 数据转换与计算师**
+- **上下文**: 业务逻辑、计算公式、数据转换、指标计算
+- **输入变量**: 清洗后数据、业务规则配置
+- **Prompt**: 执行数据转换和业务计算，生成所需指标
+- **Tools**: n8n (Data Transformation)、Zapier (Calculation Engine)、Make (Formula Processing)、Data Calculation MCP
+- **输出**: 转换后数据、计算结果、业务指标、派生数据
+
+**Agent 4: 多源数据整合师**
+- **上下文**: 数据源、整合规则、去重逻辑、一致性检查
+- **输入变量**: 多个数据源、整合规则
+- **Prompt**: 整合来自不同源的数据，确保一致性和完整性
+- **Tools**: n8n (Data Integration)、Make (ETL Tools)、Zapier (Merge Operations)、Data Integration MCP
+- **输出**: 整合数据集、一致性报告、重复记录、完整性检查
+
+**Agent 5: 智能报表生成师**
+- **上下文**: 报表模板、可视化要求、业务需求、展示规范
+- **输入变量**: `output_requirements` (输出要求)、处理后数据
+- **Prompt**: 基于处理后数据生成专业的Excel报表
+- **Tools**: n8n (Report Generator)、Zapier (Excel Templates)、Make (Chart Generation)、Report Generation MCP
+- **输出**: Excel报表、图表可视化、数据透视表、格式化结果
+
+**Agent 6: 系统集成与同步师**
+- **上下文**: 目标系统、API接口、同步规则、错误处理
+- **输入变量**: `integration_targets` (集成目标系统)、最终数据
+- **Prompt**: 将处理后数据同步到目标业务系统
+- **Tools**: n8n (System Integration)、Make (API Connectors)、Zapier (Database Sync)、System Integration MCP
+- **输出**: 同步结果、传输日志、错误报告、状态确认
+
+**Agent 7: 自动化流程调度师**
+- **上下文**: 执行计划、触发条件、依赖关系、监控规则
+- **输入变量**: `automation_schedule` (自动化计划)、流程配置
+- **Prompt**: 管理和调度自动化流程的执行
+- **Tools**: n8n (Workflow Scheduler)、Zapier (Automation Triggers)、Make (Job Management)、Process Automation MCP
+- **输出**: 执行计划、调度状态、依赖管理、监控告警
+
+**Agent 8: 质量监控与优化师**
+- **上下文**: 质量指标、性能监控、错误分析、优化建议
+- **输入变量**: `quality_standards` (质量标准)、执行结果
+- **Prompt**: 监控数据处理质量，提供优化建议
+- **Tools**: n8n (Quality Monitoring)、Make (Performance Analytics)、Zapier (Error Tracking)、Quality Control MCP
+- **输出**: 质量报告、性能分析、优化建议、改进计划
+
+**Workflow 流程图**
+```mermaid
+graph TD
+    A[📊 Excel文件] --> B[🔍 Excel文件智能解析师]
+    B --> C[🧹 数据清洗与标准化专家]
+    C --> D[🔄 数据转换与计算师]
+    D --> E[🔗 多源数据整合师]
+    E --> F[📈 智能报表生成师]
+    F --> G[🔌 系统集成与同步师]
+    G --> H[⏰ 自动化流程调度师]
+    H --> I[📊 质量监控与优化师]
+    I --> J[⚙️ 完整Excel自动化系统]
+    
+    style A fill:#e1f5fe
+    style J fill:#c8e6c9
+    style E fill:#fff3e0
+```
+
+---
+
+## 📝 总结
+
+本文档详细展示了 **AI Native Workflow 3.0** 在各个业务场景中的具体应用，每个用例都包含：
+
+### ✅ 已完成的重要改进：
+
+1. **真实工具集成**: 所有Agent都使用了具体的自动化平台
+   - **n8n**: 开源工作流自动化
+   - **Zapier**: 主流SaaS集成平台  
+   - **Make**: 可视化自动化工具
+   - **MCP**: 自定义集成组件
+
+2. **明确变量使用**: 每个Agent都清晰标注了使用的输入变量
+   - `输入变量`字段明确显示变量来源
+   - 变量与Agent功能的对应关系清晰
+   - 支持变量在流程中的传递和转换
+
+3. **完整场景覆盖**: 涵盖了企业运营的核心场景
+   - **Sales (销售)**: 线索管理、客户画像、销售提案等
+   - **Marketing (营销)**: 社媒运营、内容矩阵、活动策划等  
+   - **Research (研究)**: 投资研究、行业分析、文献综述等
+   - **Support (客服)**: 知识库、问题路由、满意度分析等
+   - **Content Creation (内容创作)**: 图文生成、视频制作、播客制作等
+   - **Business Operations (商业运营)**: 智能报表、知识管理、供应链优化等
+   - **Education & Training (教育培训)**: 个性化学习路径等
+   - **Technical Development (技术开发)**: 代码生成与优化等
+   - **Creative Design (创意设计)**: 品牌视觉系统设计等
+   - **Data Processing & Integration (数据处理与集成)**: Excel工作流自动化等
+
+### 🎯 核心价值体现：
+
+这些用例特别针对了企业最迫切的自动化需求：
+- **减少60%的手工处理时间**
+- **标准化重复性工作流程** 
+- **多系统数据集成和流转**
+- **智能决策支持和洞察挖掘**
+
+每个Workflow都经过精心设计，确保：
+- **立即可见的ROI**
+- **明确的痛点解决**
+- **技术实现可行性**
+- **标准化程度高，便于复用**
 - **Prompt**: 确保所有视觉元素符合品牌调性和风格一致性
 - **Tools**: Photoshop、Canva、Figma、品牌规范检查工具
 - **输出**: 风格统一的图像集、品牌元素应用、一致性报告
@@ -2205,9 +1970,9 @@ graph TD
 
 ---
 
-通过以上详细的用例展开，我们可以看到AI Native Workflow 3.0在各个业务场景中的具体应用潜力。每个用例都遵循了"agent串联"的核心理念，通过多个专业化agent的协作，完成复杂的业务流程，并输出高质量的可交付成果。这种设计既保证了专业性，又确保了用户友好性，真正实现了"第三代AI Native Workflow"的愿景。
+通过以上详细的用例展开，我们可以看到 **AI Native Workflow 3.0** 在各个业务场景中的具体应用潜力。每个用例都遵循了"agent串联"的核心理念，通过多个专业化agent的协作，完成复杂的业务流程，并输出高质量的可交付成果。这种设计既保证了专业性，又确保了用户友好性，真正实现了"第三代AI Native Workflow"的愿景。
 
-特别是新增的数据处理与集成场景，直接针对了 Lleverage 文章中强调的核心痛点：**消除手工数据搬运、Excel工作流自动化、多系统集成**等企业最迫切的需求，这些场景具有：
+特别是新增的数据处理与集成场景，直接针对了企业最迫切的自动化需求：**消除手工数据搬运、Excel工作流自动化、多系统集成**等核心痛点，这些场景具有：
 
 - **立即可见的ROI** - 减少60%的手工处理时间
 - **明确的痛点** - 每个企业都有大量Excel和数据集成需求  
